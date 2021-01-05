@@ -1,7 +1,10 @@
 'use strict';
 
 const {getRandomInt, shuffle} = require(`../../utils`);
-const fs = require(`fs`);
+
+// ????????????????
+const fs = require(`fs`).promises;
+const chalk = require(`chalk`);
 
 const {CATEGORIES, SENTENCES, TITLES, SumRestrict, OfferType, PictureRestrict} = require(`../../constants`);
 const DEFAULT_COUNT = 1;
@@ -23,20 +26,20 @@ const generateOffers = (count) => (
 
 module.exports = {
   name: `--generate`,
-  run(args) {
+  async run(args) {
     const [count] = args; // получение первого элемента массива
     const countOffer = Number.parseInt(count, 10) || DEFAULT_COUNT;
     const content = JSON.stringify(generateOffers(countOffer)); // преобразуем в строку JSON
 
-    // FILE_NAME - имя файла
-    // content - данные, которые требуется записать в файл
-    // колбэк-функция
-    fs.writeFile(FILE_NAME, content, (err) => {
-      if (err) {
-        return console.error(`Can't write data to file...`);
-      }
+    try {
+      // FILE_NAME - имя файла
+      // content - данные, которые требуется записать в файл
+      await fs.writeFile(FILE_NAME, content);
+      console.info(chalk.green(`Operation success. File created.`));
 
-      return console.info(`Operation success. File created.`);
-    });
+    } catch (err) {
+      console.error(chalk.red(`Can't write data to file...`));
+    }
   }
 };
+
