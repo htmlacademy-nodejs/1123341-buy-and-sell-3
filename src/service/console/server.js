@@ -27,7 +27,7 @@ const sendResponse = (res, statusCode, message) => {
     'Content-Type': `text/html; charset=UTF-8`,
   });
 
-  // метод end - отправляет ответ
+  // метод end - отправляет ответ;
   res.end(template);
 };
 
