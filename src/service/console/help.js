@@ -16,6 +16,7 @@ module.exports = {
       --version:            выводит номер версии
       --help:               печатает этот текст
       --generate <count>    формирует файл mocks.json
+      --server <count>      запускает http-server
     `;
 
     console.log(chalk.gray(text));
