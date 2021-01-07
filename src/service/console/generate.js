@@ -23,7 +23,7 @@ const readContent = async (filePath) => {
     const content = await fs.readFile(filePath, `utf8`);
 
     // создаем массив из эелементов, разделенных переносом на новую строку (\n)
-    return content.split(`\n`);
+    return content.trim().split(`\n`);
 
   } catch (err) {
     console.error(chalk.red(err));

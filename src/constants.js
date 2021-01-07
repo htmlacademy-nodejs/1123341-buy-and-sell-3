@@ -6,8 +6,8 @@ const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
 
 const ExitCode = {
-  error: 1,
-  success: 0,
+  ERROR: 1,
+  SUCCESS: 0,
 };
 
 const OfferType = {
@@ -26,6 +26,14 @@ const PictureRestrict = {
   MAX: 16,
 };
 
+const HttpCode = {
+  OK: 200,
+  NOT_FOUND: 404,
+  INTERNAL_SERVER_ERROR: 500,
+  FORBIDDEN: 403,
+  UNAUTHORIZED: 401,
+};
+
 module.exports = {
   DEFAULT_COMMAND,
   DEFAULT_COUNT,
@@ -34,5 +42,7 @@ module.exports = {
   SumRestrict,
   PictureRestrict,
   USER_ARGV_INDEX,
-  ExitCode
+  ExitCode,
+  HttpCode
 };
+
