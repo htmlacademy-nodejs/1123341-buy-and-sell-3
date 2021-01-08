@@ -1,5 +1,7 @@
 'use strict';
 
+// пакет fs экспортирует объект promises который содержит все те же функции (за исключением синхронных),
+// которые возвращают промисы, не принимающие колбэки
 const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
 
@@ -56,6 +58,7 @@ module.exports = {
     try {
       // FILE_NAME - имя файла
       // content - данные, которые требуется записать в файл
+      // убрали третий параметр(колбэк), в котором возвращали консоль в двух случаях ошибка/без ошибки
       await fs.writeFile(FILE_NAME, content);
       console.info(chalk.green(`Operation success. File created.`));
 
