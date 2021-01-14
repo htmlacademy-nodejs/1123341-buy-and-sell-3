@@ -7,6 +7,7 @@ const {HttpCode} = require(`../../constants`);
 
 // Значение может быть любым в пределах от 0 до 65535
 // но лучше не использовать диапазон от 0 до 1023
+// не использовать список зарегестрированных в IANA
 const DEFAULT_PORT = 3000;
 const FILENAME = `mocks.json`;
 
@@ -41,11 +42,9 @@ const sendResponse = (res, statusCode, message) => {
 const onClientConnect = async (req, res) => {
   // в случае отсутствия файла с моками, например, когда пользователь обратился к несуществующему ресурсу
   const notFoundMessageText = `Not found`;
-  console.log(`мама`);
   switch (req.url) {
     case `/`:
       try {
-        console.log(`Джон`);
         const fileContent = await fs.readFile(FILENAME);
         const mocks = JSON.parse(fileContent);
         const message = mocks
@@ -55,13 +54,11 @@ const onClientConnect = async (req, res) => {
         sendResponse(res, HttpCode.OK, `<ul>${message}</ul>`);
 
       } catch (err) {
-        console.log(`Майкл`);
         sendResponse(res, HttpCode.NOT_FOUND, notFoundMessageText);
       }
 
       break;
     default:
-      console.log(`Моджо`);
       sendResponse(res, HttpCode.NOT_FOUND, notFoundMessageText);
       break;
   }
@@ -72,7 +69,6 @@ module.exports = {
   run(args) {
     const [customPort] = args;
     const port = Number.parseInt(customPort, 10) || DEFAULT_PORT;
-    console.log(`лулу`);
     // метод createServer создаёт новый сервер.
     // onClientConnect - колбэк, будет вызван при получении запроса от клиента
     http.createServer(onClientConnect)
