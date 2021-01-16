@@ -50,3 +50,8 @@ git clone SSH-адрес_вашего_форка
 
 [travis-image]: https://travis-ci.com/htmlacademy-nodejs/1123341-buy-and-sell-3.svg?branch=master
 [travis-url]: https://travis-ci.com/htmlacademy-nodejs/1123341-buy-and-sell-3
+
+#### 5. Мои заметки!
+
+В директории service размещается код API-сервиса, а в express часть приложения, которая отвечает за формирование 
+страниц на сервере и других вспомогательных задач.
