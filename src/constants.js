@@ -4,6 +4,7 @@ const DEFAULT_COMMAND = `--help`;
 const USER_ARGV_INDEX = 2;
 const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
+const MAX_ID_LENGTH = 6;
 
 const ExitCode = {
   ERROR: 1,
@@ -43,6 +44,7 @@ module.exports = {
   PictureRestrict,
   USER_ARGV_INDEX,
   ExitCode,
-  HttpCode
+  HttpCode,
+  MAX_ID_LENGTH
 };
 
