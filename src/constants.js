@@ -35,6 +35,8 @@ const HttpCode = {
   UNAUTHORIZED: 401,
 };
 
+const API_PREFIX = `/api`;
+
 module.exports = {
   DEFAULT_COMMAND,
   DEFAULT_COUNT,
@@ -45,6 +47,7 @@ module.exports = {
   USER_ARGV_INDEX,
   ExitCode,
   HttpCode,
-  MAX_ID_LENGTH
+  MAX_ID_LENGTH,
+  API_PREFIX
 };
 
