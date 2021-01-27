@@ -11,7 +11,7 @@ module.exports = (app, service) => {
 
   route.get(`/`, async (req, res) => {
     const categories = await service.findAll();
-    res.status(HttpCode.OK)
+    res.status(HttpCode.OK) // OK: 200
       .json(categories);
   });
 };
