@@ -6,6 +6,7 @@ const offerValidator = require(`../middlewares/offer-validator`);
 const offerExist = require(`../middlewares/offer-exists`);
 const commentValidator = require(`../middlewares/comment-validator`);
 
+// маршрут оборачиваем в функцию
 module.exports = (app, offerService, commentService) => {
   const route = new Router();
 

@@ -5,6 +5,7 @@ const {HttpCode} = require(`../../constants`);
 
 const route = new Router();
 
+// маршрут оборачиваем в функцию
 module.exports = (app, service) => {
   app.use(`/search`, route);
 
