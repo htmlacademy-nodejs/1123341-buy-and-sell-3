@@ -25,6 +25,9 @@ const app = new Router();
   // запускаем контроллеры
   category(app, new CategoryService(mockData));
   search(app, new SearchService(mockData));
+
+  // для класса-комментов аргумент в constructor не нужен
+  // в методы класса попадают аргументы при запросе маршрута
   offer(app, new OfferService(mockData), new CommentService());
 })();
 

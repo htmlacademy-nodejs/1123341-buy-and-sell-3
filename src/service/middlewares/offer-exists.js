@@ -2,6 +2,7 @@
 
 const {HttpCode} = require(`../../constants`);
 
+// в service подставляем класс
 module.exports = (service) => (req, res, next) => {
   const {offerId} = req.params;
 

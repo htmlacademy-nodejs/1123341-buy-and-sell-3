@@ -7,6 +7,7 @@ const offerExist = require(`../middlewares/offer-exists`);
 const commentValidator = require(`../middlewares/comment-validator`);
 
 // маршрут оборачиваем в функцию
+// в offerService прилетает экземпляр класса
 module.exports = (app, offerService, commentService) => {
   const route = new Router();
 
@@ -37,6 +38,7 @@ module.exports = (app, offerService, commentService) => {
       .json(offer);
   });
 
+  // редактируем публикацию
   route.put(`/:offerId`, offerValidator, (req, res) => {
     const {offerId} = req.params;
     const existOffer = offerService.findOne(offerId);
@@ -65,6 +67,8 @@ module.exports = (app, offerService, commentService) => {
       .json(offer);
   });
 
+  // существование публикации проверяем в offerExist(offerService)
+  // если не существует, то не запустится next()
   route.get(`/:offerId/comments`, offerExist(offerService), (req, res) => {
     const {offer} = res.locals;
     const comments = commentService.findAll(offer);
@@ -90,6 +94,8 @@ module.exports = (app, offerService, commentService) => {
 
   route.post(`/:offerId/comments`, [offerExist(offerService), commentValidator], (req, res) => {
     const {offer} = res.locals;
+    // пушим новый коммент в массив комментов
+    // возвращаем новый коммент
     const comment = commentService.create(offer, req.body);
 
     return res.status(HttpCode.CREATED)

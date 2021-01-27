@@ -3,6 +3,7 @@
 const {nanoid} = require(`nanoid`);
 const {MAX_ID_LENGTH} = require(`../../constants`);
 
+// без constructor, только методы
 class CommentService {
   create(offer, comment) {
     const newComment = Object.assign({
