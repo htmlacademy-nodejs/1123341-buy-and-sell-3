@@ -32,10 +32,12 @@ module.exports = (app, offerService, commentService) => {
   });
 
   route.post(`/`, offerValidator, (req, res) => {
+    // объекты req.body и res.body не содержат id
     const offer = offerService.create(req.body);
 
-    return res.status(HttpCode.CREATED)
-      .json(offer);
+    return res
+      .status(HttpCode.CREATED)
+      .json(offer); // отправляем запрашивающей стороне ответ (offer) в формате json
   });
 
   // редактируем публикацию
