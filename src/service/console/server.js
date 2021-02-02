@@ -5,6 +5,7 @@ const express = require(`express`);
 const fs = require(`fs`).promises;
 const {HttpCode, API_PREFIX} = require(`../../constants`);
 const routes = require(`../api`);
+const {getLogger} = require(`../lib/logger`);
 
 // Значение может быть любым в пределах от 0 до 65535
 // но лучше не использовать диапазон от 0 до 1023
@@ -13,6 +14,8 @@ const DEFAULT_PORT = 3000;
 const FILENAME = `mocks.json`;
 
 const app = express();
+// в консольном выводе (в объекте) при вызове методов логгера будет ключ name со значением `api`
+const logger = getLogger({name: `api`});
 app.use(express.json());
 
 app.get(`/offers`, async (req, res) => {
@@ -38,12 +41,18 @@ module.exports = {
     const [customPort] = args;
     const port = Number.parseInt(customPort, 10) || DEFAULT_PORT;
 
-    app.listen(port, (err) => {
-      if (err) {
-        return console.error(`Ошибка при создании сервера`, err);
-      }
+    try {
+      app.listen(port, (err) => {
+        if (err) {
+          return logger.error(`An error occured on server creation: ${err.message}`);
+        }
 
-      return console.info(chalk.green(`Ожидаю соединений на ${port}`));
-    });
+        return logger.info(`Listening to connections on ${port}`);
+      });
+
+    } catch (err) {
+      logger.error(`An error occured: ${err.message}`);
+      process.exit(1);
+    }
   }
 };
