@@ -13,9 +13,10 @@ const DEFAULT_PORT = 3000;
 const FILENAME = `mocks.json`;
 
 const app = express();
+app.use(express.json());
+app.use(API_PREFIX, routes); // API_PREFIX === `/api` из констант
 // в консольном выводе (в объекте) при вызове методов логгера будет ключ name со значением `api`
 const logger = getLogger({name: `api`});
-app.use(express.json());
 
 app.get(`/offers`, async (req, res) => {
   try {
@@ -35,8 +36,6 @@ app.use((req, res, next) => {
   });
   next();
 });
-
-app.use(API_PREFIX, routes); // API_PREFIX === `/api` из констант
 
 app.use((req, res) => {
   res
