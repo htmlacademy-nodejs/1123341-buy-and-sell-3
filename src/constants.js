@@ -39,6 +39,11 @@ const HttpCode = {
 
 const API_PREFIX = `/api`;
 
+const Env = {
+  DEVELOPMENT: `development`,
+  PRODUCTION: `production`
+};
+
 module.exports = {
   DEFAULT_COMMAND,
   DEFAULT_COUNT,
@@ -50,6 +55,7 @@ module.exports = {
   ExitCode,
   HttpCode,
   MAX_ID_LENGTH,
-  API_PREFIX
+  API_PREFIX,
+  Env
 };
 
