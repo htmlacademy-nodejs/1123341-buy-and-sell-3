@@ -8,12 +8,10 @@ class CategoryService {
   // формирование массива всех категорий для которых есть объявления;
   // Нет смысла возвращать одинаковые имена категорий.
   findAll() {
-    const categories = this._offers.reduce((acc, offer) => {
-      acc.add(...offer.category);
-      return acc;
-    }, new Set());
+    const categories = this._offers
+      .flatMap((offer) => offer.category);
 
-    return [...categories];
+    return new Set(categories);
   }
 }
 
