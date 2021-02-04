@@ -11,8 +11,11 @@ class OfferService {
   // актуализируем массив this._offers
   // возвращаем новый offer с ключом "id"
   create(offer) {
-    const newOffer = Object
-      .assign({id: nanoid(MAX_ID_LENGTH), comments: []}, offer);
+    const newOffer = {
+      id: nanoid(MAX_ID_LENGTH),
+      comments: [],
+      ...offer
+    };
 
     this._offers.push(newOffer);
     return newOffer;
@@ -32,7 +35,7 @@ class OfferService {
     return offer;
   }
 
-  findAll() {
+  find() {
     return this._offers;
   }
 
@@ -47,7 +50,6 @@ class OfferService {
 
     return Object.assign(oldOffer, offer);
   }
-
 }
 
 module.exports = OfferService;

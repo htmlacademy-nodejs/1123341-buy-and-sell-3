@@ -10,7 +10,7 @@ module.exports = (app, service) => {
   app.use(`/category`, route);
 
   route.get(`/`, async (req, res) => {
-    const categories = await service.findAll();
+    const categories = await service.find();
     res.status(HttpCode.OK) // OK: 200
       .json(categories);
   });

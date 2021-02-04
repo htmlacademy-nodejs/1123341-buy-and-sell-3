@@ -16,7 +16,7 @@ module.exports = (app, service) => {
     }
 
     // query - текст запроса
-    const searchResults = service.findAll(query);
+    const searchResults = service.find(query);
     const searchStatus = searchResults.length > 0 ? HttpCode.OK : HttpCode.NOT_FOUND;
 
     res.status(searchStatus)

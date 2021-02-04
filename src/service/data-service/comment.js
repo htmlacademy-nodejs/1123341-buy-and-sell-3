@@ -28,7 +28,7 @@ class CommentService {
     return deletedComment;
   }
 
-  findAll(offer) {
+  find(offer) {
     return offer.comments;
   }
 

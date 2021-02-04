@@ -7,7 +7,7 @@ class CategoryService {
 
   // формирование массива всех категорий для которых есть объявления;
   // Нет смысла возвращать одинаковые имена категорий.
-  findAll() {
+  find() {
     const categories = this._offers
       .flatMap((offer) => offer.category);
 

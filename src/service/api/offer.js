@@ -14,7 +14,7 @@ module.exports = (app, offerService, commentService) => {
   app.use(`/offers`, route);
 
   route.get(`/`, (req, res) => {
-    const offers = offerService.findAll();
+    const offers = offerService.find();
     res.status(HttpCode.OK).json(offers);
   });
 
@@ -73,7 +73,7 @@ module.exports = (app, offerService, commentService) => {
   // если не существует, то не запустится next()
   route.get(`/:offerId/comments`, offerExist(offerService), (req, res) => {
     const {offer} = res.locals;
-    const comments = commentService.findAll(offer);
+    const comments = commentService.find(offer);
 
     res.status(HttpCode.OK)
       .json(comments);
