@@ -19,7 +19,7 @@ class OfferService {
   }
 
   // возвращаем либо null, либо удаленный offer
-  drop(id) {
+  delete(id) {
     // находим offer по "id"
     const offer = this._offers.find((item) => item.id === id);
 

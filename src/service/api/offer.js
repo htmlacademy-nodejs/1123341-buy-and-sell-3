@@ -58,7 +58,7 @@ module.exports = (app, offerService, commentService) => {
 
   route.delete(`/:offerId`, (req, res) => {
     const {offerId} = req.params;
-    const offer = offerService.drop(offerId);
+    const offer = offerService.delete(offerId);
 
     if (!offer) {
       return res.status(HttpCode.NOT_FOUND)
@@ -83,7 +83,7 @@ module.exports = (app, offerService, commentService) => {
   route.delete(`/:offerId/comments/:commentId`, offerExist(offerService), (req, res) => {
     const {offer} = res.locals;
     const {commentId} = req.params;
-    const deletedComment = commentService.drop(offer, commentId);
+    const deletedComment = commentService.delete(offer, commentId);
 
     if (!deletedComment) {
       return res.status(HttpCode.NOT_FOUND)
