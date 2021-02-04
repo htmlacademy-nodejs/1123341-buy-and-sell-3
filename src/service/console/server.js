@@ -1,6 +1,5 @@
 'use strict';
 
-const chalk = require(`chalk`);
 const express = require(`express`);
 const fs = require(`fs`).promises;
 const {HttpCode, API_PREFIX} = require(`../../constants`);
@@ -29,11 +28,26 @@ app.get(`/offers`, async (req, res) => {
   }
 });
 
+app.use((req, res, next) => {
+  logger.debug(`Запрос по адресу ${req.url}`);
+  res.on(`finish`, () => {
+    logger.info(`Response status code ${res.statusCode}`);
+  });
+  next();
+});
+
 app.use(API_PREFIX, routes); // API_PREFIX === `/api` из констант
 
-app.use((req, res) => res
-  .status(HttpCode.NOT_FOUND)
-  .send(`Not found`));
+app.use((req, res) => {
+  res
+    .status(HttpCode.NOT_FOUND)
+    .send(`Not found`);
+  logger.error(`Маршрут не найден: ${req.url}`);
+});
+
+app.use((err, _req, _res, _next) => {
+  logger.error(`Ошибка при обработке запроса: ${err.message}`);
+});
 
 module.exports = {
   name: `--server`,
@@ -44,14 +58,14 @@ module.exports = {
     try {
       app.listen(port, (err) => {
         if (err) {
-          return logger.error(`An error occured on server creation: ${err.message}`);
+          return logger.error(`Произошла ошибка при создании сервера: ${err.message}`);
         }
 
         return logger.info(`Listening to connections on ${port}`);
       });
 
     } catch (err) {
-      logger.error(`An error occured: ${err.message}`);
+      logger.error(`Произошла ошибка: ${err.message}`);
       process.exit(1);
     }
   }
