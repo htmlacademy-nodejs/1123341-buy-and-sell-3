@@ -10,11 +10,12 @@ module.exports = (service) => (req, res, next) => {
   const offer = service.findOne(offerId);
 
   if (!offer) {
-    return res.status(HttpCode.NOT_FOUND)
+    res.status(HttpCode.NOT_FOUND)
       .send(`Offer with ${offerId} not found`);
-  }
 
-  // сохраняем объявление в объекте locals
-  res.locals.offer = offer;
-  return next();
+  } else {
+    // сохраняем объявление в объекте locals
+    res.locals.offer = offer;
+    next();
+  }
 };
