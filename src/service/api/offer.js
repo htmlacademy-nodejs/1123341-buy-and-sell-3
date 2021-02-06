@@ -10,7 +10,6 @@ const commentValidator = require(`../middlewares/comment-validator`);
 // в offerService прилетает экземпляр класса
 module.exports = (app, offerService, commentService) => {
   const route = new Router();
-
   app.use(`/offers`, route);
 
   route.get(`/`, (req, res) => {
