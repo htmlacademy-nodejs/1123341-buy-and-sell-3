@@ -14,9 +14,19 @@ const FILENAME = `mocks.json`;
 
 const app = express();
 app.use(express.json());
-app.use(API_PREFIX, routes); // API_PREFIX === `/api` из констант
+
 // в консольном выводе (в объекте) при вызове методов логгера будет ключ name со значением `api`
 const logger = getLogger({name: `api`});
+
+app.use(API_PREFIX, routes);
+
+app.use((req, res, next) => {
+  logger.debug(`Запрос по адресу ${req.url}`);
+  res.on(`finish`, () => {
+    logger.info(`Response status code ${res.statusCode}`);
+  });
+  next();
+});
 
 app.get(`/offers`, async (req, res) => {
   try {
@@ -27,14 +37,6 @@ app.get(`/offers`, async (req, res) => {
   } catch (err) {
     res.status(HttpCode.INTERNAL_SERVER_ERROR).send(err);
   }
-});
-
-app.use((req, res, next) => {
-  logger.debug(`Запрос по адресу ${req.url}`);
-  res.on(`finish`, () => {
-    logger.info(`Response status code ${res.statusCode}`);
-  });
-  next();
 });
 
 app.use((req, res) => {
