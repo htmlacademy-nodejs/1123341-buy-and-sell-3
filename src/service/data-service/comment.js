@@ -3,6 +3,7 @@
 const {nanoid} = require(`nanoid`);
 const {MAX_ID_LENGTH} = require(`../../constants`);
 
+// без constructor, только методы
 class CommentService {
   create(offer, comment) {
     const newComment = Object.assign({
@@ -13,21 +14,21 @@ class CommentService {
     return newComment;
   }
 
-  drop(offer, commentId) {
-    const dropComment = offer.comments
+  delete(offer, commentId) {
+    const deletedComment = offer.comments
       .find((item) => item.id === commentId);
 
-    if (!dropComment) {
+    if (!deletedComment) {
       return null;
     }
 
     offer.comments = offer.comments
       .filter((item) => item.id !== commentId);
 
-    return dropComment;
+    return deletedComment;
   }
 
-  findAll(offer) {
+  find(offer) {
     return offer.comments;
   }
 
