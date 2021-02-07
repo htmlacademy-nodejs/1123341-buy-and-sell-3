@@ -4,6 +4,7 @@ const DEFAULT_COMMAND = `--help`;
 const USER_ARGV_INDEX = 2;
 const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
+const MAX_ID_LENGTH = 6;
 
 const ExitCode = {
   ERROR: 1,
@@ -34,6 +35,8 @@ const HttpCode = {
   UNAUTHORIZED: 401,
 };
 
+const API_PREFIX = `/api`;
+
 module.exports = {
   DEFAULT_COMMAND,
   DEFAULT_COUNT,
@@ -43,6 +46,8 @@ module.exports = {
   PictureRestrict,
   USER_ARGV_INDEX,
   ExitCode,
-  HttpCode
+  HttpCode,
+  MAX_ID_LENGTH,
+  API_PREFIX
 };
 

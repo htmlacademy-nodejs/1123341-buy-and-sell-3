@@ -3,7 +3,8 @@
 const chalk = require(`chalk`);
 const express = require(`express`);
 const fs = require(`fs`).promises;
-const {HttpCode} = require(`../../constants`);
+const {HttpCode, API_PREFIX} = require(`../../constants`);
+const routes = require(`../api`);
 
 // Значение может быть любым в пределах от 0 до 65535
 // но лучше не использовать диапазон от 0 до 1023
@@ -24,6 +25,8 @@ app.get(`/offers`, async (req, res) => {
     res.status(HttpCode.INTERNAL_SERVER_ERROR).send(err);
   }
 });
+
+app.use(API_PREFIX, routes); // API_PREFIX === `/api` из констант
 
 app.use((req, res) => res
   .status(HttpCode.NOT_FOUND)
