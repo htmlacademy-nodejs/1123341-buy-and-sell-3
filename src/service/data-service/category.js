@@ -11,7 +11,7 @@ class CategoryService {
     const categories = this._offers
       .flatMap((offer) => offer.category);
 
-    return new Set(categories);
+    return [...new Set(categories)];
   }
 }
 

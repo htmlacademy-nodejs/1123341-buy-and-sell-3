@@ -9,7 +9,10 @@ module.exports = (app, service) => {
   app.use(`/search`, route);
 
   route.get(`/`, (req, res) => {
+    // http://localhost:3000/api/search?query=Название титула объявления
+    // в req есть query: { query: 'Рок — это протест' }
     const {query = ``} = req.query;
+
     if (!query) {
       res.status(HttpCode.BAD_REQUEST).json([]);
       return;

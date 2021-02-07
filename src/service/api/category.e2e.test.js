@@ -218,7 +218,7 @@ describe(`API returns category list`, () => {
     // Выполнием тестовый запрос к API
     // Сохраняем результат в response.
     response = await request(app)
-      .get(`/category`);
+      .get(`/categories`);
   });
 
   test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
