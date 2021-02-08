@@ -3,16 +3,17 @@
 // пакет fs экспортирует объект promises который содержит все те же функции (за исключением синхронных),
 // которые возвращают промисы, не принимающие колбэки
 const fs = require(`fs`).promises;
+const path = require(`path`);
 const chalk = require(`chalk`);
 const {nanoid} = require(`nanoid`);
 
 const {SumRestrict, OfferType, PictureRestrict, MAX_ID_LENGTH} = require(`../../constants`);
 const {getRandomInt, shuffle} = require(`../../utils`);
 
-const FILE_SENTENCES_PATH = `../../data/sentences.txt`;
-const FILE_TITLES_PATH = `../../data/titles.txt`;
-const FILE_CATEGORIES_PATH = `../../data/categories.txt`;
-const FILE_COMMENTS_PATH = `../../data/comments.txt`;
+const FILE_SENTENCES_PATH = path.resolve(__dirname, `../../../data/sentences.txt`);
+const FILE_TITLES_PATH = path.resolve(__dirname, `../../../data/titles.txt`);
+const FILE_CATEGORIES_PATH = path.resolve(__dirname, `../../../data/categories.txt`);
+const FILE_COMMENTS_PATH = path.resolve(__dirname, `../../../data/comments.txt`);
 const DEFAULT_COUNT = 1;
 const MAX_COMMENTS = 6;
 const FILE_NAME = `mocks.json`;
