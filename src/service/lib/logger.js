@@ -6,6 +6,9 @@ const {Env} = require(`../../constants`);
 
 const LOG_FILE = path.resolve(__dirname, `../../../logs/api.log`);
 const isDevMode = process.env.NODE_ENV === Env.DEVELOPMENT;
+
+// если process.env.NODE_ENV === `developmnet`,
+// тогда defaultLogLevel === `info`
 const defaultLogLevel = isDevMode ? `info` : `error`;
 
 // конфигуратор логгера
