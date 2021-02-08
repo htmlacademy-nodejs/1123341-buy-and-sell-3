@@ -16,7 +16,7 @@ const FILE_CATEGORIES_PATH = path.resolve(__dirname, `../../../data/categories.t
 const FILE_COMMENTS_PATH = path.resolve(__dirname, `../../../data/comments.txt`);
 const DEFAULT_COUNT = 1;
 const MAX_COMMENTS = 6;
-const FILE_NAME = `mocks.json`;
+const FILE_NAME = `mocks.json`; // создается файл, а также его путь от коренной папки
 
 // number.toString().padStart(2, 0) - слово состоит из 2-х символов
 // номер + оставшееся место заполняем нулями
@@ -25,6 +25,7 @@ const getPictureFileName = (number) => `item${number.toString().padStart(2, 0)}.
 // возвращает либо массив элементов, либо пустой массив в случае ошибки
 const readContent = async (filePath) => {
   try {
+    console.log(filePath);
     const content = await fs.readFile(filePath, `utf8`);
 
     // создаем массив из эелементов, разделенных переносом на новую строку (\n)
