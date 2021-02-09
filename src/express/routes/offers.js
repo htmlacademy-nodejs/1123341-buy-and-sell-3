@@ -1,6 +1,7 @@
 'use strict';
 
 const {Router} = require(`express`);
+const multer = require(`multer`); // для обработки загружаемых файлов
 const {nanoid} = require(`nanoid`);
 const path = require(`path`);
 
@@ -9,6 +10,43 @@ const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
 
 const offersRouter = new Router();
 const api = require(`../api`).getAPI();
+
+// Сконфигурируем multer: куда и под какими именами ему сохранять файлы.
+// Создадим хранилище методом multer.diskStorage.
+// destination - куда сохранять файлы, filename - присваиваем имена
+const storage = multer.diskStorage({
+  destination: uploadDirAbsolute,
+  filename: (req, file, cb) => {
+    const uniqueName = nanoid(10);
+    const extension = file.originalname.split(`.`).pop();
+    cb(null, `${uniqueName}.${extension}`);
+  }
+});
+
+// Теперь сконфигурируем multer, передав ему созданное хранилище.
+const upload = multer({storage});
+
+// Затем подключим middleware для обработки прикреплённого изображения.
+offersRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
+  console.log(req);
+  const {body, file} = req;
+  const offerData = {
+    picture: file.filename, // Middleware сохранит изображение и вернёт нам имя сохранённого файла
+    sum: body.price,
+    type: body.action,
+    description: body.comment,
+    title: body[`ticket-name`],
+    category: body.category
+  };
+
+  try {
+    await api.createOffer(offerData);
+    res.redirect(`/my`);
+
+  } catch (error) {
+    res.redirect(`back`);
+  }
+});
 
 // путь в res.render(``) прописываем так, как будто мы находимся в файле index.js
 offersRouter.get(`/category/:id`, (req, res) => res.render(`category`));

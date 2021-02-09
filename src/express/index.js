@@ -8,6 +8,7 @@ const mainRoutes = require(`./routes/main`);
 
 const DEFAULT_PORT = 8080;
 const PUBLIC_DIR = `public`;
+const UPLOAD_DIR = `upload`; // директория для загрузки файлов
 
 const app = express();
 
@@ -18,6 +19,9 @@ app.use(`/`, mainRoutes);
 // встроенный middleware static передает клиенту статические ресурсы
 app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));
 
+// Чтобы изображения, сохранённые нами, могли отображаться в объявлениях на странице так же,
+// как и изображения из src/express/public
+app.use(express.static(path.resolve(__dirname, UPLOAD_DIR)));
 
 // если синтаксис запроса некорректен, то выбрасываем ошибку
 app.use((req, res) => res.status(400).render(`errors/404`));
