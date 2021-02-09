@@ -27,6 +27,7 @@ class API {
   }
 
   search(query) {
+    // в query попадает то, что вбито в поисковик
     return this._load(`/search`, {params: {query}});
   }
 
