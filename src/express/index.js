@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require(`express`);
-const path = require(`path`); // предоставляет утилиты для работы с путями к файлам и директориям
+const path = require(`path`);
 const offersRoutes = require(`./routes/offers`);
 const myRoutes = require(`./routes/my`);
 const mainRoutes = require(`./routes/main`);
@@ -9,15 +9,13 @@ const mainRoutes = require(`./routes/main`);
 const DEFAULT_PORT = 8080;
 const PUBLIC_DIR = `public`;
 
-const app = express(); // инициализируем новое веб-приложение (функция)
+const app = express();
 
 app.use(`/offers`, offersRoutes);
 app.use(`/my`, myRoutes);
 app.use(`/`, mainRoutes);
 
 // встроенный middleware static передает клиенту статические ресурсы
-// в path.resolve(__dirname, PUBLIC_DIR) получаем (см. ниже)
-// C:\Users\Lenovo\Desktop\1123341-buy-and-sell-3\src\express\public
 app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));
 
 
