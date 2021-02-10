@@ -28,7 +28,6 @@ const upload = multer({storage});
 
 // Затем подключим middleware для обработки прикреплённого изображения.
 offersRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
-  console.log(req);
   const {body, file} = req;
   const offerData = {
     picture: file.filename, // Middleware сохранит изображение и вернёт нам имя сохранённого файла
