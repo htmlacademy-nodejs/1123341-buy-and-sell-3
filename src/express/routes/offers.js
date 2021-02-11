@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 
 // Затем подключим middleware для обработки прикреплённого изображения.
-// путь совпадает с form action из new-ticket.pug
+// В атрибуте action: обработчик приёма данных из form(new-ticket.pug)
 offersRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
   const {body, file} = req;
   const offerData = {
