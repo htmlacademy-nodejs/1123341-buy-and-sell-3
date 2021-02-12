@@ -364,7 +364,7 @@ describe(`API correctly deletes an offer`, () => {
 
   test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
   test(`Returns deleted offer`, () => expect(response.body.id).toBe(`5xd3ZQ`));
-  test(`Offer count is 4 now`, () => request(app)
+  test(`Offer count is 9 now`, () => request(app)
     .get(`/offers`)
     .expect((res) => expect(res.body.length).toBe(9))
   );

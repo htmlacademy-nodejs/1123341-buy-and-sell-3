@@ -3,19 +3,20 @@
 // пакет fs экспортирует объект promises который содержит все те же функции (за исключением синхронных),
 // которые возвращают промисы, не принимающие колбэки
 const fs = require(`fs`).promises;
+const path = require(`path`);
 const chalk = require(`chalk`);
 const {nanoid} = require(`nanoid`);
 
 const {SumRestrict, OfferType, PictureRestrict, MAX_ID_LENGTH} = require(`../../constants`);
 const {getRandomInt, shuffle} = require(`../../utils`);
 
-const FILE_SENTENCES_PATH = `../../data/sentences.txt`;
-const FILE_TITLES_PATH = `../../data/titles.txt`;
-const FILE_CATEGORIES_PATH = `../../data/categories.txt`;
-const FILE_COMMENTS_PATH = `../../data/comments.txt`;
+const FILE_SENTENCES_PATH = path.resolve(__dirname, `../../../data/sentences.txt`);
+const FILE_TITLES_PATH = path.resolve(__dirname, `../../../data/titles.txt`);
+const FILE_CATEGORIES_PATH = path.resolve(__dirname, `../../../data/categories.txt`);
+const FILE_COMMENTS_PATH = path.resolve(__dirname, `../../../data/comments.txt`);
 const DEFAULT_COUNT = 1;
 const MAX_COMMENTS = 6;
-const FILE_NAME = `mocks.json`;
+const FILE_NAME = `mocks.json`; // создается файл, а также его путь от коренной папки
 
 // number.toString().padStart(2, 0) - слово состоит из 2-х символов
 // номер + оставшееся место заполняем нулями
@@ -24,6 +25,7 @@ const getPictureFileName = (number) => `item${number.toString().padStart(2, 0)}.
 // возвращает либо массив элементов, либо пустой массив в случае ошибки
 const readContent = async (filePath) => {
   try {
+    console.log(filePath);
     const content = await fs.readFile(filePath, `utf8`);
 
     // создаем массив из эелементов, разделенных переносом на новую строку (\n)

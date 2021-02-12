@@ -18,8 +18,6 @@ app.use(express.json());
 // в консольном выводе (в объекте) при вызове методов логгера будет ключ name со значением `api`
 const logger = getLogger({name: `api`});
 
-app.use(API_PREFIX, routes);
-
 app.use((req, res, next) => {
   logger.debug(`Запрос по адресу ${req.url}`);
   res.on(`finish`, () => {
@@ -27,6 +25,8 @@ app.use((req, res, next) => {
   });
   next();
 });
+
+app.use(API_PREFIX, routes);
 
 app.get(`/offers`, async (req, res) => {
   try {
