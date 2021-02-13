@@ -6,7 +6,7 @@ const offersRoutes = require(`./routes/offers`);
 const myRoutes = require(`./routes/my`);
 const mainRoutes = require(`./routes/main`);
 
-const DEFAULT_PORT = 8080;
+const DEFAULT_PORT = 8081;
 const PUBLIC_DIR = `public`;
 const UPLOAD_DIR = `upload`; // директория для загрузки файлов
 
