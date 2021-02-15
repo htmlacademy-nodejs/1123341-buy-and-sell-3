@@ -14,6 +14,7 @@ class API {
   }
 
   async _load(url, options) {
+    // при методе search, options = { params: { query: 'то что вбили' } }
     const response = await this._http.request({url, ...options});
     return response.data;
   }

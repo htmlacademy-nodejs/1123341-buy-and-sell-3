@@ -16,6 +16,7 @@ mainRouter.get(`/login`, (req, res) => res.render(`login`));
 mainRouter.get(`/search`, async (req, res) => {
   try {
     // в search попадает то, что вбито в поисковик
+    // search - это значение атрибута name
     const {search} = req.query;
     // в results попадают офферы, удовлетворяющие поисковому запросу
     const results = await api.search(search);

@@ -29,9 +29,11 @@ const upload = multer({storage});
 // Затем подключим middleware для обработки прикреплённого изображения.
 // В атрибуте action: обработчик приёма данных из form(new-ticket.pug)
 offersRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
+  // в file попадут данные о загруженном фото. У input должны быть type="file" name="avatar"
+  // name="" в input становятся свойствами body
   const {body, file} = req;
   const offerData = {
-    picture: file.filename, // Middleware сохранит изображение и вернёт нам имя сохранённого файла
+    picture: file.filename,
     sum: body.price,
     type: body.action,
     description: body.comment,
