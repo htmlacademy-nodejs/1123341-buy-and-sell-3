@@ -44,6 +44,23 @@ const Env = {
   PRODUCTION: `production`
 };
 
+const users = [
+  {
+    email: `ivanov@example.com`,
+    passwordHash: `5f4dcc3b5aa765d61d8327deb882cf99`,
+    firstName: `Иван`,
+    lastName: `Иванов`,
+    avatar: `avatar1.jpg`
+  },
+  {
+    email: `petrov@example.com`,
+    passwordHash: `5f4dcc3b5aa765d61d8327deb882cf99`,
+    firstName: `Пётр`,
+    lastName: `Петров`,
+    avatar: `avatar2.jpg`
+  }
+];
+
 module.exports = {
   DEFAULT_COMMAND,
   DEFAULT_COUNT,
@@ -56,6 +73,7 @@ module.exports = {
   HttpCode,
   MAX_ID_LENGTH,
   API_PREFIX,
-  Env
+  Env,
+  users
 };
 
