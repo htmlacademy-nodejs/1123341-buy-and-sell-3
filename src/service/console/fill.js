@@ -65,7 +65,7 @@ module.exports = {
 
     const offers = generateOffers(countOffer, titles, categories.length, users.length, sentences, commentSentences);
 
-    // Извлекаем комментарии в отдельный массив;
+    // Получим один массив комментариев с указанием пользователя и объявления
     const comments = offers.flatMap((offer) => offer.comments);
 
     // Пример [{offerId: 1, categoryId: 3}, {offerId: 2, categoryId: 5}, ...]
