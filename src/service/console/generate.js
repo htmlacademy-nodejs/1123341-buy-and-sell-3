@@ -16,7 +16,7 @@ const FILE_CATEGORIES_PATH = path.resolve(__dirname, `../../../data/categories.t
 const FILE_COMMENTS_PATH = path.resolve(__dirname, `../../../data/comments.txt`);
 const DEFAULT_COUNT = 1;
 const MAX_COMMENTS = 6;
-const FILE_NAME = `mocks.json`; // создается файл, а также его путь от коренной папки
+const FILE_NAME = `mocks.json`;
 
 // number.toString().padStart(2, 0) - слово состоит из 2-х символов
 // номер + оставшееся место заполняем нулями
@@ -77,7 +77,7 @@ module.exports = {
       // FILE_NAME - имя файла
       // content - данные, которые требуется записать в файл
       // убрали третий параметр(колбэк), в котором возвращали консоль в двух случаях ошибка/без ошибки
-      await fs.writeFile(FILE_NAME, content);
+      await fs.writeFile(path.resolve(__dirname, `../../../${FILE_NAME}`), content);
       console.info(chalk.green(`Operation success. File created.`));
 
     } catch (err) {
