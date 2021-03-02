@@ -2,7 +2,7 @@
 
 const axios = require(`axios`);
 const TIMEOUT = 1000;
-const port = process.env.API_PORT || 3000;
+const port = process.env.API_PORT || 3001;
 const defaultURL = `http://localhost:${port}/api/`;
 
 class API {
@@ -14,6 +14,7 @@ class API {
   }
 
   async _load(url, options) {
+    // при методе search, options = { params: { query: 'то что вбили' } }
     const response = await this._http.request({url, ...options});
     return response.data;
   }

@@ -9,7 +9,7 @@ const {getLogger} = require(`../lib/logger`);
 // Значение может быть любым в пределах от 0 до 65535
 // но лучше не использовать диапазон от 0 до 1023
 // не использовать список зарегестрированных в IANA
-const DEFAULT_PORT = 3000;
+const DEFAULT_PORT = 3001;
 const FILENAME = `mocks.json`;
 
 const app = express();
