@@ -5,6 +5,7 @@ const fs = require(`fs`).promises;
 const {HttpCode, API_PREFIX} = require(`../../constants`);
 const routes = require(`../api`);
 const {getLogger} = require(`../lib/logger`);
+const sequelize = require(`../lib/sequelize`);
 
 // Значение может быть любым в пределах от 0 до 65535
 // но лучше не использовать диапазон от 0 до 1023
@@ -52,21 +53,32 @@ app.use((err, _req, _res, _next) => {
 
 module.exports = {
   name: `--server`,
-  run(args) {
+  async run(args) {
+
+    try {
+      logger.info(`Trying to connect to database...`);
+      await sequelize.authenticate();
+
+    } catch (err) {
+      logger.error(`An error occured: ${err.message}`);
+      process.exit(1);
+    }
+    logger.info(`Connection to database established`);
+
     const [customPort] = args;
     const port = Number.parseInt(customPort, 10) || DEFAULT_PORT;
 
     try {
       app.listen(port, (err) => {
         if (err) {
-          return logger.error(`Произошла ошибка при создании сервера: ${err.message}`);
+          return logger.error(`An error occured on server creation: ${err.message}`);
         }
 
         return logger.info(`Listening to connections on ${port}`);
       });
 
     } catch (err) {
-      logger.error(`Произошла ошибка: ${err.message}`);
+      logger.error(`An error occured: ${err.message}`);
       process.exit(1);
     }
   }
