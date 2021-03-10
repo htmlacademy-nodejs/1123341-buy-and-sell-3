@@ -62,7 +62,7 @@ const generateOffers = (count, titles, categories, sentences, comments) => (
 );
 
 module.exports = {
-  name: `--generate`,
+  name: `--filldb`,
   async run(args) {
     const sentences = await readContent(FILE_SENTENCES_PATH);
     const titles = await readContent(FILE_TITLES_PATH);
