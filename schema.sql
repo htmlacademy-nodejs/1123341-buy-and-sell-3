@@ -1,3 +1,9 @@
+DROP TABLE IF EXISTS "categories" CASCADE;
+DROP TABLE IF EXISTS "users" CASCADE;
+DROP TABLE IF EXISTS "offers" CASCADE;
+DROP TABLE IF EXISTS "comments" CASCADE;
+DROP TABLE IF EXISTS "offer_categories" CASCADE;
+
 CREATE TABLE categories(
   /*работает как SERIAL, но вдобавок следит, чтобы пользователь в принципе не мог сгенерировать id вручную*/
   id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
