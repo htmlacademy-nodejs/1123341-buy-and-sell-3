@@ -47,31 +47,42 @@ UPDATE offers
 SET title = 'Уникальное предложение!'
 WHERE id = 1
 
+-- Категории и количество их упоминаний в объявлениях
+SELECT
+  categories.id,
+  categories.name,
+
+  /*(3) По COUNT(!!мне!!) мы можем понять - сколько строк в таблице, т.к. наименования столбца оригинальные*/
+  COUNT(offer_categories.offer_id)
+FROM categories
+
+  /*(1) Узнаем какой offer_categories.offer_id соответствует categories.id.
+    (2) По offer_categories.category_id считаются повторения*/
+  LEFT JOIN offer_categories ON categories.id = offer_categories.category_id
+  GROUP BY categories.id
+
 
 -- Полная информация по всем объявлениям
 SELECT
   offers.title,
   users.first_name,
-  /*Cуммируем совпадающие comments.offer_id для колонки offers.id.
-  Меня не интересует значение comments.id, а сама строка*/
-  comments.id AS comments_count,
+  COUNT(comments.id) AS comments_count,
 
-  /*Конкатенируем совпадающие offer_categories.offer_id для колонки offers.id*/
+  /*Конкатенируем categories.name для соответствующих offers.id (связано с JOIN categories...)*/
   STRING_AGG(DISTINCT categories.name, ', ') AS category_list
 FROM offers
 
   /*Узнаем какой offer_categories.category_id соответствует offers.id*/
   JOIN offer_categories ON offers.id = offer_categories.offer_id
 
-  /*Узнаем какой categories.name соответствует offers.id*/
+  /*Узнаем какие categories.name соответствует offers.id*/
   JOIN categories ON offer_categories.category_id = categories.id
 
-  /*Узнаем какой comments.id соответствует offers.id.
-  Без COUNT(см.выше) в GROUP BY должен попасть параметр comments.id, чтобы увидеть все строки из таблицы comments*/
+  /*Узнаем какой comments.id соответствует offers.id*/
   LEFT JOIN comments ON comments.offer_id = offers.id
   JOIN users ON users.id = offers.user_id
 
   /*В итоговой таблице максимальное количество строк из представленных колонок*/
-  GROUP BY offers.id, users.id, comments.id
+  GROUP BY offers.id, users.id
   ORDER BY offers.created_at DESC
 
