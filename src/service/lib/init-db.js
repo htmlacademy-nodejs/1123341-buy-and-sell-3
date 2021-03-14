@@ -7,12 +7,11 @@ module.exports = async (sequelize, {categories, offers}) => {
   const {Category, Offer} = defineModels(sequelize); // а где Comment и OfferCategory????????????
   await sequelize.sync({force: true});
 
-  // ________________________________________
+  // -------------------------------------------------
   // Ниже могу использовать:
   // offers, categories - это просто массивы с данными
   // Category, Offer - это классы сущностей из models
-  // ________________________________________
-
+  // -------------------------------------------------
 
   // Запишем в таблицу все категории, а id выбирается автоматически
   const categoryModels = await Category.bulkCreate(
@@ -27,12 +26,12 @@ module.exports = async (sequelize, {categories, offers}) => {
 
   const offerPromises = offers
     .map(async (offer) => {
-      // Без include запишет в БД объявления, но не комментарии
+      // Без include запишет в БД объявления, но не комментарии.
+      // Offer.hasMany(Comment... && Comment.belongsTo(Offer...
+      // include не устанавливает связи с существующими записямии.
       const offerModel = await Offer.create(offer, {include: [Aliase.COMMENTS]});
 
-      // include не сработает с категориями. Категории — это уже существующие записи.
-      // На текущий момент Sequelize умеет создавать связанные записи при создании основной,
-      // но не устанавливать связи с существующими записями.
+      // Здесь связи многие-ко-многим и есть промеж. таблица.
       await offerModel.addCategories(
           offer.categories.map((name) => categoryIdByName[name])
       );
