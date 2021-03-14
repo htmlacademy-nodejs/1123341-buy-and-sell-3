@@ -9,8 +9,9 @@ module.exports = (app, service) => {
   app.use(`/categories`, route);
 
   route.get(`/`, async (req, res) => {
-    const categories = await service.find();
-    res.status(HttpCode.OK) // OK: 200
+    const {count} = req.query;
+    const categories = await service.findAll(count);
+    res.status(HttpCode.OK)
       .json(categories);
   });
 };
