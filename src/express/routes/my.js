@@ -12,7 +12,7 @@ myRouter.get(`/`, async (req, res) => {
 
 // нам нужны комментари только первых 3 офферов
 myRouter.get(`/comments`, async (req, res) => {
-  const offers = await api.getOffers();
+  const offers = await api.getOffers({comments: true});
   res.render(`comments`, {offers: offers.slice(0, 3)});
 });
 
