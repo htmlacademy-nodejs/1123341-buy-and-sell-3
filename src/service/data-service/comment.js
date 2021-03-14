@@ -1,37 +1,35 @@
 'use strict';
 
-const {nanoid} = require(`nanoid`);
-const {MAX_ID_LENGTH} = require(`../../constants`);
-
-// без constructor, только методы
 class CommentService {
-  create(offer, comment) {
-    const newComment = {
-      id: nanoid(MAX_ID_LENGTH),
-      comments: [],
+  constructor(sequelize) {
+    this._Offer = sequelize.models.Offer;
+    this._Comment = sequelize.models.Comment;
+  }
+
+  // offerId - внешний ключ в таблице comments для связи с id в offers.
+  // В методе: получаем объект-обертку offer и запрос для создания комментария
+  create(offerId, comment) {
+    return this._Comment.create({
+      offerId,
       ...comment
-    };
-
-    offer.comments.push(newComment);
-    return newComment;
+    });
   }
 
-  delete(offer, commentId) {
-    const deletedComment = offer.comments
-      .find((item) => item.id === commentId);
+  async drop(id) {
+    // destroy возвращает количество удалённых записей.
+    const deletedRows = await this._Comment.destroy({
+      where: {id}
+    });
 
-    if (!deletedComment) {
-      return null;
-    }
-
-    offer.comments = offer.comments
-      .filter((item) => item.id !== commentId);
-
-    return deletedComment;
+    // true/false, если deletedRows === число/0
+    return !!deletedRows;
   }
 
-  find(offer) {
-    return offer.comments;
+  findAll(offerId) {
+    return this._Comment.findAll({
+      where: {offerId},
+      raw: true
+    });
   }
 
 }
