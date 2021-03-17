@@ -4,10 +4,22 @@ const {Router} = require(`express`);
 const mainRouter = new Router();
 const api = require(`../api`).getAPI();
 
+const OFFERS_PER_PAGE = 8;
+
 // путь в res.render(``) прописываем так, как будто мы находимся в файле index.js
 mainRouter.get(`/`, async (req, res) => {
-  const offers = await api.getOffers();
-  res.render(`main`, {offers});
+
+  let {page = 1} = req.query;
+  page = +page;
+  const limit = OFFERS_PER_PAGE;
+  const offset = (page - 1) * OFFERS_PER_PAGE;
+
+  const [{count, offers}, categories] = await Promise.all(
+      [api.getOffers({limit, offset}), api.getCategories(true)]
+  );
+
+  const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
+  res.render(`main`, {offers, page, totalPages, categories});
 });
 
 mainRouter.get(`/register`, (req, res) => res.render(`sign-up`));
