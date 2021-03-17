@@ -14,8 +14,6 @@ module.exports = (service) => (req, res, next) => {
       .send(`Offer with ${offerId} not found`);
 
   } else {
-    // сохраняем объявление в объекте locals
-    res.locals.offer = offer;
     next();
   }
 };
