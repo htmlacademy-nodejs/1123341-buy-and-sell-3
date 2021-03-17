@@ -12,7 +12,7 @@ class OfferService {
   async create(offerData) {
     const offer = await this._Offer.create(offerData);
     await offer.addCategories(offerData.categories);
-    return offer.get();
+    return offer.get(); // ?????????
   }
 
   async drop(id) {
@@ -31,7 +31,7 @@ class OfferService {
     }
 
     const offers = await this._Offer.findAll({include});
-    return offers.map((item) => item.get());
+    return offers.map((item) => item.get()); // ?????????
   }
 
   findOne(id, needComments) {
