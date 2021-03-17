@@ -31,7 +31,7 @@ module.exports = async (sequelize, {categories, offers}) => {
       // include не устанавливает связи с существующими записямии.
       const offerModel = await Offer.create(offer, {include: [Aliase.COMMENTS]});
 
-      // Здесь связи многие-ко-многим и есть промеж. таблица.
+      // Здесь связи многие-ко-многим, есть промеж. таблица.
       await offerModel.addCategories(
           offer.categories.map((name) => categoryIdByName[name])
       );
