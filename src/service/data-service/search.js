@@ -10,23 +10,18 @@ class SearchService {
 
   async findAll(searchText) {
     const offers = await this._Offer.findAll({
-      // Условие
+      // Условие как в SQL
       where: {
         title: {
           [Op.substring]: searchText
         }
       },
+      // как будто LEFT OUTER JOIN "categories" AS "categories"
       include: [Aliase.CATEGORIES],
-
-      // ???????? убрать потом raw. Без опции raw запрос вернёт не массив «голых» данных, а массив объектов-обёрток
-      // Один из них — get. Он позволяет получить необработанные данные
-      // raw: true
     });
 
-    // что делает метод get??????????
     return offers.map((offer) => offer.get());
   }
-
 }
 
 module.exports = SearchService;

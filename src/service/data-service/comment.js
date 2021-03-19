@@ -7,7 +7,6 @@ class CommentService {
   }
 
   // offerId - внешний ключ в таблице comments для связи с id в offers.
-  // В методе: получаем объект-обертку offer и запрос для создания комментария
   create(offerId, comment) {
     return this._Comment.create({
       offerId,
@@ -16,12 +15,9 @@ class CommentService {
   }
 
   async drop(id) {
-    // destroy возвращает количество удалённых записей.
     const deletedRows = await this._Comment.destroy({
       where: {id}
     });
-
-    // true/false, если deletedRows === число/0
     return !!deletedRows;
   }
 
@@ -31,7 +27,6 @@ class CommentService {
       raw: true
     });
   }
-
 }
 
 module.exports = CommentService;

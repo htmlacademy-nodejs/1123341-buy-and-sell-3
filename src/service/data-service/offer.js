@@ -10,9 +10,17 @@ class OfferService {
   }
 
   async create(offerData) {
+    // offer - аналог записи, типа INSERT INTO в SQL-запросе.
+    // Автом. присваиваются: id, updatedAt, createdAt. Нет categories
+    // offer instanceof this._Offer
     const offer = await this._Offer.create(offerData);
+
+    // В таблице OfferCategories нашему автоматически сформированному OfferId
+    // присваиваются CategoryId, которые отправил пользователь.
     await offer.addCategories(offerData.categories);
-    return offer.get(); // ?????????
+
+    // get() - выдает необработанные данные(Есть: id, updatedAt, createdAt. Нет: categories)
+    return offer.get();
   }
 
   async drop(id) {
@@ -31,7 +39,7 @@ class OfferService {
     }
 
     const offers = await this._Offer.findAll({include});
-    return offers.map((item) => item.get()); // ?????????
+    return offers.map((item) => item.get());
   }
 
   findOne(id, needComments) {
@@ -39,10 +47,14 @@ class OfferService {
     if (needComments) {
       include.push(Aliase.COMMENTS);
     }
-    return this._Offer.findByPk(id, {include});
+
+    // neededOffer instanceof this._Offer
+    const neededOffer = this._Offer.findByPk(id, {include});
+    return neededOffer;
   }
 
   async findPage({limit, offset}) {
+    // findAndCountAll возвращает промис
     const {count, rows} = await this._Offer.findAndCountAll({
       limit,
       offset,
@@ -58,7 +70,6 @@ class OfferService {
     });
     return !!affectedRows;
   }
-
 }
 
 module.exports = OfferService;

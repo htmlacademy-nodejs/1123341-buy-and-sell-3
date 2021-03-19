@@ -49,6 +49,6 @@ CREATE TABLE offer_categories(
   FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
-/*Что это значит?????????????????*/
+/*Что это значит???????*/
 /*Производим поиск по заголовкам объявлений. Чтобы поиск работал быстрее, создадим индекс*/
 CREATE INDEX ON offers(title);

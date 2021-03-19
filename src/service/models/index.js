@@ -2,16 +2,18 @@
 
 const {Model} = require(`sequelize`);
 
-// В трех случаях экспортируем ф-ю define, которая принимает в качестве параметра экземпляр sequelize,
-// и уже затем вызывает Category.init.
-const defineCategory = require(`./category`); // 1
-const defineComment = require(`./comment`); // 2
-const defineOffer = require(`./offer`); // 3
+// Импортируемые функции при вызове инициируют модели
+const defineCategory = require(`./category`);
+const defineComment = require(`./comment`);
+const defineOffer = require(`./offer`);
 
+// Алиас — это особое имя, которое даётся для связи между сущностями.
+// Позволяет задать несколько разных связей между одной и той же парой сущностей.
 const Aliase = require(`./aliase`);
 class OfferCategory extends Model {}
 
-// Описание связей
+// Описание связей внутри данной функции
+// Возвращает классы(таблицы)
 const define = (sequelize) => {
   const Category = defineCategory(sequelize);
   const Comment = defineComment(sequelize);
@@ -26,9 +28,8 @@ const define = (sequelize) => {
   // through задает имя вспомогательной таблицы, через которую задается многие ко многим
   Offer.belongsToMany(Category, {through: OfferCategory, as: Aliase.CATEGORIES});
   Category.belongsToMany(Offer, {through: OfferCategory, as: Aliase.OFFERS});
-  Category.hasMany(OfferCategory, {as: Aliase.OFFER_CATEGORIES}); // зачем?????????????
+  Category.hasMany(OfferCategory, {as: Aliase.OFFER_CATEGORIES}); // зачем???????
 
-  // Вернём классы наших сущностей
   return {Category, Comment, Offer, OfferCategory};
 };
 

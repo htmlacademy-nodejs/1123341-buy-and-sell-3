@@ -20,14 +20,11 @@ const FILE_COMMENTS_PATH = path.resolve(__dirname, `../../../data/comments.txt`)
 
 const logger = getLogger({});
 
-
-// возвращает либо массив элементов, либо пустой массив в случае ошибки
 const readContent = async (filePath) => {
   try {
     const content = await fs.readFile(filePath, `utf8`);
-
-    // создаем массив из эелементов, разделенных переносом на новую строку (\n)
     return content.trim().split(`\n`);
+
   } catch (err) {
     logger.error(`Error when reading file: ${err.message}`);
     return [];

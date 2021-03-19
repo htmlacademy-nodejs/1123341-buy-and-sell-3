@@ -16,7 +16,8 @@ module.exports = (app, service) => {
       return;
     }
 
-    // query - текст запроса
+    // searchResults - массив запрашиваемых объектов(не оберток),
+    // у каждого объекта значение свойства categories это массив объектов-оберток
     const searchResults = await service.findAll(query);
     const searchStatus = searchResults.length > 0 ? HttpCode.OK : HttpCode.NOT_FOUND;
 

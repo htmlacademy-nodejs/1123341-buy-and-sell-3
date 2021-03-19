@@ -23,7 +23,6 @@ module.exports = async (sequelize, {categories, offers}) => {
     ...acc
   }), {}); // объяснение в utils
 
-
   const offerPromises = offers
     .map(async (offer) => {
       // Без include запишет в БД объявления, но не комментарии.
