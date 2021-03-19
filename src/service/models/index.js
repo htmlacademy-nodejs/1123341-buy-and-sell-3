@@ -26,7 +26,7 @@ const define = (sequelize) => {
   // through задает имя вспомогательной таблицы, через которую задается многие ко многим
   Offer.belongsToMany(Category, {through: OfferCategory, as: Aliase.CATEGORIES});
   Category.belongsToMany(Offer, {through: OfferCategory, as: Aliase.OFFERS});
-  Category.hasMany(OfferCategory, {as: Aliase.OFFER_CATEGORIES}); // зачем?????????????
+  Category.hasMany(OfferCategory, {as: Aliase.OFFER_CATEGORIES}); // зачем???????
 
   // Вернём классы наших сущностей
   return {Category, Comment, Offer, OfferCategory};

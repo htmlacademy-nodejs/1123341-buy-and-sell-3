@@ -142,7 +142,6 @@ describe(`API returns category list`, () => {
     // Обращаемся напрямую к маршруту /categories, минуя реальный роутинг,
     // т.е. без http://localhost:${port}/api/categories
     response = await request(app).get(`/categories`);
-    console.log(response);
   });
 
   test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
@@ -150,10 +149,9 @@ describe(`API returns category list`, () => {
   test(`Returns list of 3 categories`, () => expect(response.body.length).toBe(3));
 
   test(`Category names are "Журналы", "Игры", "Животные"`, () => (
-    // ??????? до конца из руководства не понятна структура
     // Массив, который получится из response.body.map((it) => it.name)
     // должен содержать [`Журналы`, `Игры`, `Животные`].
-    // Отметим, что массив [`Журналы`, `Игры`, `Животные`] не обязательно
+    // Отметим, что проверочный массив [`Журналы`, `Игры`, `Животные`] не обязательно
     // должен содержать все элементы из массива response.body.map((it) => it.name).
     expect(response.body.map((it) => it.name))
       .toEqual(expect.arrayContaining([`Журналы`, `Игры`, `Животные`]))
