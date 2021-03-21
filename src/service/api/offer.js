@@ -11,10 +11,13 @@ module.exports = (app, offerService, commentService) => {
   app.use(`/offers`, route);
 
   route.get(`/`, async (req, res) => {
+    // ??????? offset, limit
     const {offset, limit, comments} = req.query;
     let result;
+
     if (limit || offset) {
       result = await offerService.findPage({limit, offset});
+
     } else {
       result = await offerService.findAll(comments);
     }
@@ -22,8 +25,9 @@ module.exports = (app, offerService, commentService) => {
   });
 
   route.get(`/:offerId`, async (req, res) => {
-    const {offerId} = req.params;
-    const {comments} = req.query;
+    // Например, запрос http://localhost:3001/api/offers/3?comments=tyo
+    const {offerId} = req.params; // offerId === 3
+    const {comments} = req.query; // comments === tyo
 
     const offer = await offerService.findOne(offerId, comments);
 
@@ -70,8 +74,6 @@ module.exports = (app, offerService, commentService) => {
       .json(offer);
   });
 
-  // существование публикации проверяем в offerExist(offerService)
-  // если не существует, то не запустится next()
   route.get(`/:offerId/comments`, offerExist(offerService), async (req, res) => {
     const {offerId} = req.params;
     const comments = await commentService.findAll(offerId);
@@ -94,10 +96,7 @@ module.exports = (app, offerService, commentService) => {
   });
 
   route.post(`/:offerId/comments`, [offerExist(offerService), commentValidator], (req, res) => {
-    const {offer} = res.locals;
-
-    // пушим новый коммент в массив комментов
-    // возвращаем новый коммент
+    const {offer} = res.locals; // ??????? offer всегда undefined
     const comment = commentService.create(offer, req.body);
 
     return res.status(HttpCode.CREATED)

@@ -25,7 +25,8 @@ const define = (sequelize) => {
 
   OfferCategory.init({}, {sequelize});
 
-  // through задает имя вспомогательной таблицы, через которую задается многие ко многим
+  // through задает имя вспомогательной таблицы, через которую задается многие ко многим.
+  // То, что указано в "as:" не отображается в таблицах нигде, не прописывается в SQL-запросах
   Offer.belongsToMany(Category, {through: OfferCategory, as: Aliase.CATEGORIES});
   Category.belongsToMany(Offer, {through: OfferCategory, as: Aliase.OFFERS});
   Category.hasMany(OfferCategory, {as: Aliase.OFFER_CATEGORIES}); // зачем???????
