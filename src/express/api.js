@@ -14,13 +14,14 @@ class API {
   }
 
   async _load(url, options) {
-    // при методе search, options = { params: { query: 'то что вбили' } }
     const response = await this._http.request({url, ...options});
     return response.data;
   }
 
-  getOffers() {
-    return this._load(`/offers`);
+  // возьмет значение свойства comments из переданного объекта
+  getOffers({comments}) {
+    // params - параметры, отправленные в URL запросе от пользователя
+    return this._load(`/offers`, {params: {comments}});
   }
 
   getOffer(id) {
@@ -32,8 +33,8 @@ class API {
     return this._load(`/search`, {params: {query}});
   }
 
-  async getCategories() {
-    return this._load(`/categories`);
+  getCategories(count) {
+    return this._load(`/categories`, {params: {count}});
   }
 
   async createOffer(data) {

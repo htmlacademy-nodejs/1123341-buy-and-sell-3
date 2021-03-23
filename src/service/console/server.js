@@ -1,7 +1,6 @@
 'use strict';
 
 const express = require(`express`);
-const fs = require(`fs`).promises;
 const {HttpCode, API_PREFIX} = require(`../../constants`);
 const routes = require(`../api`);
 const {getLogger} = require(`../lib/logger`);
@@ -11,8 +10,6 @@ const sequelize = require(`../lib/sequelize`);
 // но лучше не использовать диапазон от 0 до 1023
 // не использовать список зарегестрированных в IANA
 const DEFAULT_PORT = 3001;
-const FILENAME = `mocks.json`;
-
 const app = express();
 app.use(express.json());
 
@@ -21,6 +18,10 @@ const logger = getLogger({name: `api`});
 
 app.use((req, res, next) => {
   logger.debug(`Запрос по адресу ${req.url}`);
+
+  // Событие finish не означает, что клиент что-то получил.
+  // Событие происходит, когда "last segment of the response headers and body"
+  // переданы операционной системе для передачи по сети.
   res.on(`finish`, () => {
     logger.info(`Response status code ${res.statusCode}`);
   });
@@ -28,17 +29,6 @@ app.use((req, res, next) => {
 });
 
 app.use(API_PREFIX, routes);
-
-app.get(`/offers`, async (req, res) => {
-  try {
-    const fileContent = await fs.readFile(FILENAME);
-    const mocks = JSON.parse(fileContent);
-    res.json(mocks);
-
-  } catch (err) {
-    res.status(HttpCode.INTERNAL_SERVER_ERROR).send(err);
-  }
-});
 
 app.use((req, res) => {
   res

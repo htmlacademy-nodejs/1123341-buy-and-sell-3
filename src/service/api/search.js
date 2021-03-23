@@ -8,18 +8,16 @@ module.exports = (app, service) => {
   const route = new Router();
   app.use(`/search`, route);
 
-  route.get(`/`, (req, res) => {
+  route.get(`/`, async (req, res) => {
     // http://localhost:3000/api/search?query=Название титула объявления
-    // в req есть query: { query: 'Рок — это протест' }
     const {query = ``} = req.query;
-
     if (!query) {
       res.status(HttpCode.BAD_REQUEST).json([]);
       return;
     }
 
     // query - текст запроса
-    const searchResults = service.find(query);
+    const searchResults = await service.findAll(query);
     const searchStatus = searchResults.length > 0 ? HttpCode.OK : HttpCode.NOT_FOUND;
 
     res.status(searchStatus)

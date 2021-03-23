@@ -14,3 +14,14 @@ module.exports.shuffle = (someArray) => {
 
   return someArray;
 };
+
+
+// когда массив объектов типа [{name: `tyo`, id: 1}, {name: `tyo2`, id: 2}]
+// нужно превратить в объект с ключами {'tyo': 1, 'tyo2': 2}
+module.exports.arrToObj = (someArray) => {
+  return someArray.reduce((acc, next) => ({
+    [next.name]: next.id,
+    ...acc
+  }), {});
+};
+
