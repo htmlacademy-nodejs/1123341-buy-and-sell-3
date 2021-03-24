@@ -41,10 +41,13 @@ module.exports = (app, offerService, commentService) => {
   });
 
   route.post(`/`, offerValidator, async (req, res) => {
+    // В объекте req.body свойство categories в виде [1, 2](пример)
+    // В offer нет свойства categories, т.к. метод create
+    // под капотом назначает связи через sequelize: offers с categories
     const offer = await offerService.create(req.body);
 
     return res.status(HttpCode.CREATED)
-      .json(offer); // отправляем запрашивающей стороне ответ (offer) в формате json
+      .json(offer);
   });
 
   // редактируем публикацию

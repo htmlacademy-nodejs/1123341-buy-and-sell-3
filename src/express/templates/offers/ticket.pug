@@ -2,30 +2,33 @@ extends ../layout.pug
 
 block content
   -
+    //- В этом месте можно создать переменную на основе аргумента
+    //- и использовать в коде
     const formatDate = (dateString) => {
       const date = new Date(dateString);
       return date.toLocaleString();
     }
+
   main.page-content
     section.ticket
       .ticket__wrapper
         h1.visually-hidden Карточка объявления
         .ticket__content
           .ticket__img
-            img(src=`/img/${offer.picture}` alt=offer.title)
+            img(src=`/img/${proposal.picture}` alt=proposal.title)
           .ticket__info
-            h2.ticket__title #{offer.title}
+            h2.ticket__title #{proposal.title}
             .ticket__header
               p.ticket__price
-                span.js-sum #{offer.sum}
+                span.js-sum #{proposal.sum}
                 |  ₽
-              p.ticket__action #{offer.type === `OFFER` ? `КУПЛЮ` : `ПРОДАМ`}
+              p.ticket__action #{proposal.type === `OFFER` ? `КУПЛЮ` : `ПРОДАМ`}
             .ticket__desc
-              p #{offer.description}
+              p #{proposal.description}
             .ticket__data
               p
                 b Дата добавления:
-                span #{formatDate(offer.createdAt)}
+                span #{formatDate(proposal.createdAt)}
               p
                 b Автор:
                 a(href="#") Денис Шкатулкин
@@ -33,7 +36,7 @@ block content
                 b Контакты:
                 a(href="mailto:shkatulkin@ya.ru") shkatulkin@ya.ru
             ul.ticket__tags
-              each category in offer.categories
+              each category in proposal.categories
                 li
                   a.category-tile.category-tile--small(href="#")
                     span.category-tile__image
@@ -55,7 +58,7 @@ block content
               button.comment-form__button.btn.btn--white.js-button(type="submit" disabled="") Отправить
           .ticket__comments-list
             ul.comments-list
-              each comment in offer.comments
+              each comment in proposal.comments
                 li
                   .comment-card
                     .comment-card__header

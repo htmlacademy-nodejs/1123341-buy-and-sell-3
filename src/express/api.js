@@ -18,23 +18,24 @@ class API {
     return response.data;
   }
 
-  // возьмет значение свойства comments из переданного объекта
-  getOffers({comments}) {
-    // params - параметры, отправленные в URL запросе от пользователя
-    return this._load(`/offers`, {params: {comments}});
+  // аргумент - это объект со свойством comments
+  // Если мы вообще ничего не передадим при вызове, то возникнет ошибка
+  getOffers({comments} = {}) {
+    // Получается в this._http.request аргумент выглядит так:
+    // {`/offers`, params: {comments}}
+    return this._load(`/offers`, {params: {comments}}); // ?????? Написать объяснение
   }
 
-  getOffer(id) {
-    return this._load(`/offers/${id}`);
+  getOffer(id, comments) {
+    return this._load(`/offers/${id}`, {params: {comments}});
   }
 
   search(query) {
-    // в query попадает то, что вбито в поисковик
-    return this._load(`/search`, {params: {query}});
+    return this._load(`/search`, {params: {query}}); // ?????? Написать объяснение
   }
 
   getCategories(count) {
-    return this._load(`/categories`, {params: {count}});
+    return this._load(`/categories`, {params: {count}}); // ?????? Написать объяснение
   }
 
   async createOffer(data) {
