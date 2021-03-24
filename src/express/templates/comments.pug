@@ -1,20 +1,23 @@
 extends layout.pug
 
 block content
+  -
+    console.log(getRandomInt);
+
   main.page-content
     section.comments
       .comments__wrapper
         h1.visually-hidden Страница комментариев
-        each offer in offers
+        each proposal in proposals
           .comments__block
             .comments__header
               a.announce-card(href="#")
-                h2.announce-card__title #{offer.title}
+                h2.announce-card__title #{proposal.title}
                 span.announce-card__info
-                  span.announce-card__price ₽ #{offer.sum}
-                  +ticketLabel(offer.type)(class=`announce-card__type`)
+                  span.announce-card__price ₽ #{proposal.sum}
+                  +ticketLabel(proposal.type)(class=`announce-card__type`)
             ul.comments-list
-            each comment in offer.comments
+            each comment in proposal.comments
               li.js-card
                 .comment-card
                   .comment-card__header

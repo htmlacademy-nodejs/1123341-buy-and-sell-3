@@ -43,10 +43,10 @@ offersRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
 
   try {
     await api.createOffer(offerData);
-    res.redirect(`/my`);
+    res.redirect(`/my`); // http://localhost:<номер хоста>/my
 
   } catch (error) {
-    res.redirect(`back`);
+    res.redirect(`back`); // страница обнуляется
   }
 });
 

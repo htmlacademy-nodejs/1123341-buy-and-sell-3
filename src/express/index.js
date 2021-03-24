@@ -25,7 +25,10 @@ app.use(express.static(path.resolve(__dirname, UPLOAD_DIR)));
 
 // если синтаксис запроса некорректен, то выбрасываем ошибку
 app.use((req, res) => res.status(400).render(`errors/404`));
-app.use((err, _req, res, _next) => res.status(500).render(`errors/500`));
+app.use((err, _req, res, _next) => {
+  console.log(err);
+  res.status(500).render(`errors/500`);
+});
 
 app.set(`views`, path.resolve(__dirname, `templates`)); // указываем директорию с шаблонами
 app.set(`view engine`, `pug`); // название шаблонизатора
