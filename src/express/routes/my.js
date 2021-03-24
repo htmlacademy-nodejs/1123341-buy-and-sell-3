@@ -6,8 +6,8 @@ const api = require(`../api`).getAPI();
 
 // путь в res.render(``) прописываем так, как будто мы находимся в файле index.js
 myRouter.get(`/`, async (req, res) => {
-  const offers = await api.getOffers();
-  res.render(`my-tickets`, {offers});
+  const proposals = await api.getOffers();
+  res.render(`my-tickets`, {proposals});
 });
 
 // нам нужны комментари только первых 3 офферов
