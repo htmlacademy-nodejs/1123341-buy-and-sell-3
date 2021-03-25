@@ -15,12 +15,13 @@ mainRouter.get(`/`, async (req, res) => {
   const limit = OFFERS_PER_PAGE;
   const offset = (page - 1) * OFFERS_PER_PAGE;
 
-  const [{count, offers}, categories] = await Promise.all(
-      [api.getOffers({limit, offset}), api.getCategories(true)]
-  );
+  const [{count, proposals}, categories] = await Promise.all([
+    api.getOffers({limit, offset}),
+    api.getCategories(true)
+  ]);
 
   const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
-  res.render(`main`, {offers, page, totalPages, categories});
+  res.render(`main`, {proposals, page, totalPages, categories});
 });
 
 mainRouter.get(`/register`, (req, res) => res.render(`sign-up`));
