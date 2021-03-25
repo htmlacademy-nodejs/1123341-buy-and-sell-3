@@ -35,7 +35,9 @@ class API {
   }
 
   getCategories(count) {
-    return this._load(`/categories`, {params: {count}}); // ?????? Написать объяснение
+    // Придумываем наименование "count", оно становится частью запроса
+    // в виде: http://localhost:3001/api/categories?count=true
+    return this._load(`/categories`, {params: {count}});
   }
 
   async createOffer(data) {
