@@ -18,12 +18,10 @@ class API {
     return response.data;
   }
 
-  // аргумент - это объект со свойством comments
   // Если мы вообще ничего не передадим при вызове, то возникнет ошибка
   getOffers({comments} = {}) {
-    // Получается в this._http.request аргумент выглядит так:
-    // {`/offers`, params: {comments}}
-    return this._load(`/offers`, {params: {comments}}); // ?????? Написать объяснение
+    // в виде: http://localhost:3001/api/offers?comments=true
+    return this._load(`/offers`, {params: {comments}});
   }
 
   getOffer(id, comments) {
@@ -31,7 +29,7 @@ class API {
   }
 
   search(query) {
-    return this._load(`/search`, {params: {query}}); // ?????? Написать объяснение
+    return this._load(`/search`, {params: {query}});
   }
 
   getCategories(count) {
