@@ -25,3 +25,8 @@ module.exports.arrToObj = (someArray) => {
   }), {});
 };
 
+module.exports.fullUrl = (req) => {
+  return `${req.protocol}://${req.get(`host`)}${req.originalUrl}`;
+};
+
+
