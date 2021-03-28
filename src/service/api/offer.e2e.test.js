@@ -141,13 +141,9 @@ describe(`API returns a list of all offers`, () => {
   beforeAll(async () => {
     const app = await createAPI();
     response = await request(app)
-      .get(`/offers`);
+      .get(`/offers`); // Это значение response видно только внутри test
   });
 
-  // (1)... response === undefined, не смотря на то,
-  // что мы присваивали значение в beforeAll, но...(2)
-
-  // (2)... внутри каждого теста response присвоено значение, определенное в beforeAll
   test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
   test(`Returns a list of 5 offers`, () => expect(response.body.length).toBe(5));
   test(`First offer's title equals "Куплю антиквариат"`, () => expect(response.body[0].title).toBe(`Куплю антиквариат`));
@@ -345,7 +341,7 @@ describe(`API creates a comment if data is valid`, () => {
   test(`Status code 201`, () => expect(response.statusCode).toBe(HttpCode.CREATED));
   test(`Comments count is changed`, () => request(app)
     .get(`/offers/3/comments`)
-    .expect((res) => expect(res.body.length).toBe(4))
+    .expect((res) => expect(res.body.length).toBe(5))
   );
 });
 

@@ -99,8 +99,8 @@ module.exports = (app, offerService, commentService) => {
   });
 
   route.post(`/:offerId/comments`, [offerExist(offerService), commentValidator], (req, res) => {
-    const {offer} = res.locals; // ??????? offer всегда undefined
-    const comment = commentService.create(offer, req.body);
+    const {offerId} = req.params;
+    const comment = commentService.create(offerId, req.body);
 
     return res.status(HttpCode.CREATED)
       .json(comment);
