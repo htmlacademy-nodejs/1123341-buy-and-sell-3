@@ -11,17 +11,20 @@ module.exports = (app, offerService, commentService) => {
   app.use(`/offers`, route);
 
   route.get(`/`, async (req, res) => {
-    // ??????? offset, limit
     const {offset, limit, comments} = req.query;
     let result;
 
     if (limit || offset) {
+      // Фронтенд запрашивает 3 страницу http://localhost:8081/?page=3
+      // Бэкэнд запрашивает http://localhost:3001/api/offers?offset=16&limit=8
       result = await offerService.findPage({limit, offset});
 
     } else {
       result = await offerService.findAll(comments);
     }
-    res.status(HttpCode.OK).json(result);
+    res
+      .status(HttpCode.OK)
+      .json(result);
   });
 
   route.get(`/:offerId`, async (req, res) => {

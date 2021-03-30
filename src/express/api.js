@@ -18,10 +18,11 @@ class API {
     return response.data;
   }
 
-  // Если мы вообще ничего не передадим при вызове, то возникнет ошибка
-  getOffers({comments} = {}) {
-    // в виде: http://localhost:3001/api/offers?comments=true
-    return this._load(`/offers`, {params: {comments}});
+  getOffers({offset, limit, comments} = {}) {
+    // Создаем параметры для http-запроса:
+    // Получим http://localhost:3001/api/offers?comments=<true или false>
+    // или http://localhost:3001/api/offers?offset=<число>&limit=<число>
+    return this._load(`/offers`, {params: {offset, limit, comments}});
   }
 
   getOffer(id, comments) {

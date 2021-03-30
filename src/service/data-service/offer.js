@@ -18,8 +18,6 @@ class OfferService {
     // В таблице OfferCategories нашему автоматически сформированному OfferId
     // присваиваются CategoryId, которые отправил пользователь.
     await offer.addCategories(offerData.categories);
-
-    // get() - выдает необработанные данные(Есть: id, updatedAt, createdAt. Нет: categories)
     return offer.get();
   }
 
@@ -54,13 +52,13 @@ class OfferService {
   }
 
   async findPage({limit, offset}) {
-    // findAndCountAll возвращает промис
     const {count, rows} = await this._Offer.findAndCountAll({
-      limit,
-      offset,
+      limit, // кол-во объявлений на странице (название из SQL)
+      offset, // ...начиная с offset (название из SQL)
       include: [Aliase.CATEGORIES],
       distinct: true
     });
+
     return {count, offers: rows};
   }
 
