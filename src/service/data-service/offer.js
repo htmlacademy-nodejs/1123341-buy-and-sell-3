@@ -59,6 +59,7 @@ class OfferService {
       distinct: true
     });
 
+    // count - общее количество объявлений; rows - содержимое текущей страницы
     return {count, offers: rows};
   }
 
