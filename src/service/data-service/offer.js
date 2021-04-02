@@ -18,6 +18,9 @@ class OfferService {
     // В таблице OfferCategories нашему автоматически сформированному OfferId
     // присваиваются CategoryId, которые отправил пользователь.
     await offer.addCategories(offerData.categories);
+    
+    // Выглядит как объект, полученный от клиента, НО
+    // Нет свойства categories, есть - id, updatedAt, createdAt.
     return offer.get();
   }
 

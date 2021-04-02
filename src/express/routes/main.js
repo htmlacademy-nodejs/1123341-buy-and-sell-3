@@ -6,6 +6,7 @@ const api = require(`../api`).getAPI();
 
 const OFFERS_PER_PAGE = 8;
 
+// путь в res.render(``) прописываем так, как будто мы находимся в файле index.js
 mainRouter.get(`/`, async (req, res) => {
   let {page = 1} = req.query;
   page = parseInt(page, 10);
