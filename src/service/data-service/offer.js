@@ -10,15 +10,15 @@ class OfferService {
   }
 
   async create(offerData) {
-    // offer - это запись в таблице "offers", созданная с помощью INSERT INTO в SQL-запросе.
-    // с автоматически присвоенными значениями id, updatedAt, createdAt.
-    // В таблице отсутствует столбец categories.
-    const offer = await this._Offer.create(offerData); // В offerData попадает данные от клинента.
+    // offer - аналог записи, типа INSERT INTO в SQL-запросе.
+    // Автом. присваиваются: id, updatedAt, createdAt. Нет categories
+    // offer instanceof this._Offer
+    const offer = await this._Offer.create(offerData);
 
     // В таблице OfferCategories нашему автоматически сформированному OfferId
     // присваиваются CategoryId, которые отправил пользователь.
     await offer.addCategories(offerData.categories);
-
+    
     // Выглядит как объект, полученный от клиента, НО
     // Нет свойства categories, есть - id, updatedAt, createdAt.
     return offer.get();
@@ -48,16 +48,21 @@ class OfferService {
     if (needComments) {
       include.push(Aliase.COMMENTS);
     }
-    return this._Offer.findByPk(id, {include});
+
+    // neededOffer instanceof this._Offer
+    const neededOffer = this._Offer.findByPk(id, {include});
+    return neededOffer;
   }
 
   async findPage({limit, offset}) {
     const {count, rows} = await this._Offer.findAndCountAll({
-      limit,
-      offset,
+      limit, // кол-во объявлений на странице (название из SQL)
+      offset, // ...начиная с offset (название из SQL)
       include: [Aliase.CATEGORIES],
       distinct: true
     });
+
+    // count - общее количество объявлений; rows - содержимое текущей страницы
     return {count, offers: rows};
   }
 
@@ -67,7 +72,6 @@ class OfferService {
     });
     return !!affectedRows;
   }
-
 }
 
 module.exports = OfferService;

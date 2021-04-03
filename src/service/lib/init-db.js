@@ -14,6 +14,7 @@ module.exports = async (sequelize, {categories, offers}) => {
   // -------------------------------------------------
 
   // Запишем в таблицу все категории, а id выбирается автоматически
+  // ?????? Неправильно вычленяются категории из offers, мы просто вставили массив категорий
   const categoryModels = await Category.bulkCreate(
       categories.map((item) => ({name: item}))
   );
@@ -22,7 +23,6 @@ module.exports = async (sequelize, {categories, offers}) => {
     [next.name]: next.id,
     ...acc
   }), {}); // объяснение в utils
-
 
   const offerPromises = offers
     .map(async (offer) => {

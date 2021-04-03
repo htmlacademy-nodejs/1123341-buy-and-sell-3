@@ -9,14 +9,15 @@ module.exports = (app, service) => {
   app.use(`/search`, route);
 
   route.get(`/`, async (req, res) => {
-    // http://localhost:3000/api/search?query=Название титула объявления
+    // http://localhost:3000/api/search?query=<Титул объявления>
     const {query = ``} = req.query;
     if (!query) {
       res.status(HttpCode.BAD_REQUEST).json([]);
       return;
     }
 
-    // query - текст запроса
+    // searchResults - массив запрашиваемых объектов(не оберток),
+    // у каждого объекта значение свойства categories это массив объектов-оберток
     const searchResults = await service.findAll(query);
     const searchStatus = searchResults.length > 0 ? HttpCode.OK : HttpCode.NOT_FOUND;
 

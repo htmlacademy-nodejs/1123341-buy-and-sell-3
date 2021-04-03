@@ -9,6 +9,7 @@ module.exports = (app, service) => {
   app.use(`/categories`, route);
 
   route.get(`/`, async (req, res) => {
+    // Запрос http://localhost:3001/api/categories?count=true
     const {count} = req.query;
 
     // categories - это массив объектов.

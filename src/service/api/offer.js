@@ -13,17 +13,24 @@ module.exports = (app, offerService, commentService) => {
   route.get(`/`, async (req, res) => {
     const {offset, limit, comments} = req.query;
     let result;
+
     if (limit || offset) {
+      // Фронтенд запрашивает 3 страницу http://localhost:8081/?page=3
+      // Бэкэнд запрашивает http://localhost:3001/api/offers?offset=16&limit=8
       result = await offerService.findPage({limit, offset});
+
     } else {
       result = await offerService.findAll(comments);
     }
-    res.status(HttpCode.OK).json(result);
+    res
+      .status(HttpCode.OK)
+      .json(result);
   });
 
   route.get(`/:offerId`, async (req, res) => {
-    const {offerId} = req.params;
-    const {comments} = req.query;
+    // Например, запрос http://localhost:3001/api/offers/3?comments=tyo
+    const {offerId} = req.params; // offerId === 3
+    const {comments} = req.query; // comments === tyo
 
     const offer = await offerService.findOne(offerId, comments);
 
@@ -37,10 +44,13 @@ module.exports = (app, offerService, commentService) => {
   });
 
   route.post(`/`, offerValidator, async (req, res) => {
+    // В объекте req.body свойство categories в виде [1, 2](пример)
+    // В offer нет свойства categories, т.к. метод create
+    // под капотом назначает связи через sequelize: offers с categories
     const offer = await offerService.create(req.body);
 
     return res.status(HttpCode.CREATED)
-      .json(offer); // отправляем запрашивающей стороне ответ (offer) в формате json
+      .json(offer);
   });
 
   // редактируем публикацию
@@ -70,8 +80,6 @@ module.exports = (app, offerService, commentService) => {
       .json(offer);
   });
 
-  // существование публикации проверяем в offerExist(offerService)
-  // если не существует, то не запустится next()
   route.get(`/:offerId/comments`, offerExist(offerService), async (req, res) => {
     const {offerId} = req.params;
     const comments = await commentService.findAll(offerId);
@@ -94,11 +102,8 @@ module.exports = (app, offerService, commentService) => {
   });
 
   route.post(`/:offerId/comments`, [offerExist(offerService), commentValidator], (req, res) => {
-    const {offer} = res.locals;
-
-    // пушим новый коммент в массив комментов
-    // возвращаем новый коммент
-    const comment = commentService.create(offer, req.body);
+    const {offerId} = req.params;
+    const comment = commentService.create(offerId, req.body);
 
     return res.status(HttpCode.CREATED)
       .json(comment);

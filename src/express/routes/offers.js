@@ -43,10 +43,10 @@ offersRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
 
   try {
     await api.createOffer(offerData);
-    res.redirect(`/my`);
+    res.redirect(`/my`); // http://localhost:<номер хоста>/my
 
   } catch (error) {
-    res.redirect(`back`);
+    res.redirect(`back`); // страница обнуляется
   }
 });
 
@@ -64,13 +64,14 @@ offersRouter.get(`/edit/:id`, async (req, res) => {
     api.getOffer(id),
     api.getCategories()
   ]);
+
   res.render(`offers/ticket-edit`, {offer, categories});
 });
 
 offersRouter.get(`/:id`, async (req, res) => {
   const {id} = req.params;
-  const offer = await api.getOffer(id, true);
-  res.render(`offers/ticket`, {offer});
+  const proposal = await api.getOffer(id, true);
+  res.render(`offers/ticket`, {proposal});
 });
 
 module.exports = offersRouter;

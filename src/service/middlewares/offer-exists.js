@@ -4,7 +4,6 @@ const {HttpCode} = require(`../../constants`);
 
 module.exports = (service) => async (req, res, next) => {
   const {offerId} = req.params;
-  // Проверяем наличие объявления по идентификатору.
   const offer = await service.findOne(offerId);
 
   if (!offer) {

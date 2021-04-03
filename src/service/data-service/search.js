@@ -10,12 +10,13 @@ class SearchService {
 
   async findAll(searchText) {
     const offers = await this._Offer.findAll({
-      // Условие
+      // Условие как в SQL
       where: {
         title: {
           [Op.substring]: searchText
         }
       },
+      // как будто LEFT OUTER JOIN "categories" AS "categories"
       include: [Aliase.CATEGORIES],
 
       // При `raw: true` запрос вернёт массив «голых» данных, т.е. SQL-команды,
@@ -26,7 +27,6 @@ class SearchService {
 
     return offers.map((offer) => offer.get());
   }
-
 }
 
 module.exports = SearchService;
