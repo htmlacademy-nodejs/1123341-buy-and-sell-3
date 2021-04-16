@@ -33,7 +33,7 @@ offersRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
   // name="" в input становятся свойствами body
   const {body, file} = req;
   const offerData = {
-    picture: file.filename,
+    picture: file ? file.filename : ``,
     sum: body.price,
     type: body.action,
     description: body.comment,
