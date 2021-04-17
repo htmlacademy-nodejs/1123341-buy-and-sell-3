@@ -2,9 +2,10 @@
 
 const {Router} = require(`express`);
 const {HttpCode} = require(`../../constants`);
-const offerValidator = require(`../middlewares/offer-validator`);
+const schemeValidator = require(`../middlewares/scheme-validator`);
+const offerScheme = require(`../middlewares/schemes/offer-scheme`);
+const commentScheme = require(`../middlewares/schemes/comment-scheme`);
 const offerExist = require(`../middlewares/offer-exists`);
-const commentValidator = require(`../middlewares/comment-validator`);
 
 module.exports = (app, offerService, commentService) => {
   const route = new Router();
@@ -43,20 +44,20 @@ module.exports = (app, offerService, commentService) => {
       .json(offer);
   });
 
-  route.post(`/`, offerValidator, async (req, res) => {
+  route.post(`/`, schemeValidator(offerScheme), async (req, res) => {
     // В объекте req.body свойство categories в виде [1, 2](пример)
     // В offer нет свойства categories, т.к. метод create
-    // под капотом назначает связи через sequelize: offers с categories
+    // под капотом назначает связи через sequelize в Postgres: offers с categories
     const offer = await offerService.create(req.body);
 
-    return res.status(HttpCode.CREATED)
+    return res
+      .status(HttpCode.CREATED)
       .json(offer);
   });
 
   // редактируем публикацию
-  route.put(`/:offerId`, offerValidator, async (req, res) => {
+  route.put(`/:offerId`, schemeValidator(offerScheme), async (req, res) => {
     const {offerId} = req.params;
-
     const updated = await offerService.update(offerId, req.body);
 
     if (!updated) {
@@ -101,7 +102,7 @@ module.exports = (app, offerService, commentService) => {
       .json(deleted);
   });
 
-  route.post(`/:offerId/comments`, [offerExist(offerService), commentValidator], (req, res) => {
+  route.post(`/:offerId/comments`, [offerExist(offerService), schemeValidator(commentScheme)], (req, res) => {
     const {offerId} = req.params;
     const comment = commentService.create(offerId, req.body);
 

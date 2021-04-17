@@ -165,10 +165,10 @@ describe(`API returns an offer with given id`, () => {
 
 describe(`API creates an offer if data is valid`, () => {
   const newOffer = {
-    categories: [1, 2],
+    categories: [`1`, `2`],
     title: `Дам погладить котика`,
     description: `Дам погладить котика. Дорого. Не гербалайф`,
-    picture: `cat.jpg`,
+    picture: `cat.jpg`, // может быть просто пустая строка
     type: `OFFER`,
     sum: 100500
   };
@@ -192,7 +192,7 @@ describe(`API creates an offer if data is valid`, () => {
 
 describe(`API refuses to create an offer if data is invalid`, () => {
   const newOffer = {
-    category: `Котики`,
+    categories: [`1`, `2`],
     title: `Дам погладить котика`,
     description: `Дам погладить котика. Дорого. Не гербалайф`,
     picture: `cat.jpg`,
@@ -220,7 +220,7 @@ describe(`API refuses to create an offer if data is invalid`, () => {
 
 describe(`API changes existent offer`, () => {
   const newOffer = {
-    categories: [2],
+    categories: [`2`],
     title: `Дам погладить котика`,
     description: `Дам погладить котика. Дорого. Не гербалайф`,
     picture: `cat.jpg`,
@@ -248,16 +248,16 @@ describe(`API changes existent offer`, () => {
 test(`API returns status code 404 when trying to change non-existent offer`, async () => {
   const app = await createAPI();
   const validOffer = {
-    categories: [3],
+    categories: [`3`],
     title: `Это валидный`,
     description: `объект`,
     picture: `объявления`,
-    type: `однако`,
+    type: `OFFER`,
     sum: 404
   };
 
   return request(app)
-    .put(`/offers/20`)
+    .put(`/offers/202`)
     .send(validOffer)
     .expect(HttpCode.NOT_FOUND);
 });
@@ -322,7 +322,6 @@ describe(`API returns a list of comments to given offer`, () => {
       () => expect(response.body[0].text).toBe(`Почему в таком ужасном состоянии?`));
 });
 
-
 describe(`API creates a comment if data is valid`, () => {
   const newComment = {
     text: `Валидному комментарию достаточно этого поля`
@@ -350,9 +349,9 @@ test(`API refuses to create a comment to non-existent offer and returns status c
   const app = await createAPI();
 
   return request(app)
-    .post(`/offers/20/comments`)
+    .post(`/offers/202/comments`)
     .send({
-      text: `Неважно`
+      text: `Неважно какой ключ и какой текст коммента`
     })
     .expect(HttpCode.NOT_FOUND);
 
@@ -364,7 +363,9 @@ test(`API refuses to create a comment when data is invalid, and returns status c
 
   return request(app)
     .post(`/offers/2/comments`)
-    .send({})
+    .send({
+      txt: `Невалидное название ключа`
+    })
     .expect(HttpCode.BAD_REQUEST);
 
 });
