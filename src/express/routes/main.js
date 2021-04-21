@@ -6,6 +6,7 @@ const api = require(`../api`).getAPI();
 
 const OFFERS_PER_PAGE = 8;
 
+// Это маршрут должен быть доступен только аутентифицированным пользователям
 mainRouter.get(`/`, async (req, res) => {
   let {page = 1} = req.query;
   page = parseInt(page, 10);
@@ -22,7 +23,6 @@ mainRouter.get(`/`, async (req, res) => {
   res.render(`main`, {proposals: offers, page, totalPages, categories});
 });
 
-mainRouter.get(`/register`, (req, res) => res.render(`sign-up`));
 mainRouter.get(`/login`, (req, res) => res.render(`login`));
 
 mainRouter.get(`/search`, async (req, res) => {

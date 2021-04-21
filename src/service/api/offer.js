@@ -45,7 +45,7 @@ module.exports = (app, offerService, commentService) => {
   });
 
   route.post(`/`, schemeValidator(offerScheme), async (req, res) => {
-    // В объекте req.body свойство categories в виде [1, 2](пример)
+    // В объекте req.body свойство categories в виде [`1`, `2`](пример)
     // В offer нет свойства categories, т.к. метод create
     // под капотом назначает связи через sequelize в Postgres: offers с categories
     const offer = await offerService.create(req.body);
