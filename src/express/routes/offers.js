@@ -46,7 +46,15 @@ offersRouter.post(`/add`, upload.single(`offer-avatar`), async (req, res) => {
     res.redirect(`/my`); // http://localhost:<номер хоста>/my
 
   } catch (error) {
-    res.redirect(`back`); // страница обнуляется
+    const categories = await api.getCategories();
+    let {data: details} = error.response;
+    details = Array.isArray(details) ? details : [details];
+
+    res.render(`offers/new-ticket`, {
+      categories,
+      errorsMessages: details.map((errorDescription) => errorDescription.message)}
+    );
+    return;
   }
 });
 
