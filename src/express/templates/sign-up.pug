@@ -31,3 +31,7 @@ block content
             label(for="user-password-again") Пароль еще раз
             span Обязательное поле
           button.sign-up__button.btn.btn--medium.js-button(type="submit" disabled="") Создать аккаунт
+          if errorsMessages
+            ul
+              each error in errorsMessages
+                li #{error}

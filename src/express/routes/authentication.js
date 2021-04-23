@@ -5,6 +5,7 @@ const multer = require(`multer`);
 const {nanoid} = require(`nanoid`);
 const path = require(`path`);
 const authRouter = new Router();
+const api = require(`../api`).getAPI();
 const UPLOAD_DIR = `../upload/img/`;
 const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
 
@@ -25,12 +26,36 @@ authRouter.get(`/sign-up`, (req, res) => {
 });
 
 // // Обработка регистрационной формы
-authRouter.post(`/sign-up`, upload.single(`avatar`), async (req, res) => {
+authRouter.post(`/sign-up`, upload.single(`user-avatar`), async (req, res) => {
+  const {body, file} = req;
+  const userData = {
+    userAvatar: file ? file.filename : ``,
+    userName: body[`user-name`],
+    email: body[`user-email`],
+    password: body[`user-password`],
+    repeat: body[`user-password-again`]
+  };
+
+  try {
+    await api.createUser(userData);
+    res.redirect(`/login`);
+
+  } catch (error) {
+    let {data: details} = error.response;
+    details = Array.isArray(details) ? details : [details];
+
+    res.render(`sign-up`, {
+      errorsMessages: details.map((errorDescription) => errorDescription.message)}
+    );
+
+    return;
+  }
 });
 
-// // Вход на сайт
-// authRouter.get(`/login`, async (req, res) => {
-// });
+// Вход на сайт
+authRouter.get(`/login`, async (req, res) => {
+  res.render(`login`);
+});
 
 // // Обработка формы «Вход»
 // authRouter.post(`/login`, async (req, res) => {

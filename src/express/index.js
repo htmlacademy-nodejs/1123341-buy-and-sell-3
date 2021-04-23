@@ -1,20 +1,41 @@
 'use strict';
 
 const express = require(`express`);
+const expressSession = require(`express-session`);
+const sequelize = require(`../service/lib/sequelize`);
 const path = require(`path`);
 const offersRoutes = require(`./routes/offers`);
 const myRoutes = require(`./routes/my`);
 const mainRoutes = require(`./routes/main`);
+const authRoutes = require(`./routes/authentication`);
 
 const DEFAULT_PORT = 8081;
+const {DB_SECRET_SESSION} = process.env;
 const PUBLIC_DIR = `public`;
 const UPLOAD_DIR = `upload`; // директория для загрузки файлов
 
+const SequelizeStore = require(`connect-session-sequelize`)(expressSession.Store);
 const app = express();
+
+const mySessionStore = new SequelizeStore({
+  db: sequelize, // конектор к базе данных
+  expiration: 180000, // максимальное время жизни сессии в миллисекундах
+  checkExpirationInterval: 60000, // Временной интервал проверки и удаления устаревших сессий.
+  // tableName: `Sessions` - название таблицы с сессиями по умолчанию
+});
+
+app.use(expressSession({
+  store: mySessionStore,
+  secret: DB_SECRET_SESSION,
+  resave: false,
+  saveUninitialized: false,
+  name: `session_id`
+}));
 
 app.use(`/offers`, offersRoutes);
 app.use(`/my`, myRoutes);
 app.use(`/`, mainRoutes);
+app.use(`/`, authRoutes);
 
 // встроенный middleware static передает клиенту статические ресурсы
 app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));

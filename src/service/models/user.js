@@ -19,10 +19,6 @@ const define = (sequelize) => User.init({
   password: {
     type: DataTypes.STRING,
     allowNull: false
-  },
-  repeat: {
-    type: DataTypes.STRING,
-    allowNull: false
   }
 }, {
   sequelize,
