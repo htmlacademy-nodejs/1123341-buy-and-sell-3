@@ -11,6 +11,13 @@ module.exports = (app, userService) => {
   const route = new Router();
   app.use(`/user`, route);
 
+  route.get(`/`, async (req, res) => {
+    const result = await userService.findAll();
+    res
+      .status(HttpCode.OK)
+      .json(result);
+  });
+
   route.post(`/`,
       [
         schemeValidator(newUserSchema),

@@ -23,6 +23,11 @@ class UserService {
     return newUser.get();
   }
 
+  async findAll() {
+    const users = await this._User.findAll();
+    return users.map((item) => item.get());
+  }
+
   async findByEmail(email) {
     const foundUser = await this._User.findOne({where: {email}});
     return foundUser;
