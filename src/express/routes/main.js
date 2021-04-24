@@ -23,8 +23,6 @@ mainRouter.get(`/`, async (req, res) => {
   res.render(`main`, {proposals: offers, page, totalPages, categories});
 });
 
-mainRouter.get(`/login`, (req, res) => res.render(`login`));
-
 mainRouter.get(`/search`, async (req, res) => {
   try {
     // в search попадает то, что вбито в поисковик
