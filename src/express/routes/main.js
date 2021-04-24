@@ -20,7 +20,15 @@ mainRouter.get(`/`, async (req, res) => {
   ]);
 
   const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
-  res.render(`main`, {proposals: offers, page, totalPages, categories});
+  const authentication = false; // ?????? реализовать по-другому
+
+  res.render(`main`, {
+    authentication,
+    proposals: offers,
+    page,
+    totalPages,
+    categories
+  });
 });
 
 mainRouter.get(`/search`, async (req, res) => {

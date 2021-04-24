@@ -9,16 +9,16 @@ const newUserSchema = require(`../middlewares/schemes/user-scheme`);
 
 module.exports = (app, userService) => {
   const route = new Router();
-  app.use(`/user`, route);
+  app.use(`/`, route);
 
-  route.get(`/`, async (req, res) => {
+  route.get(`/user`, async (req, res) => {
     const result = await userService.findAll();
     res
       .status(HttpCode.OK)
       .json(result);
   });
 
-  route.post(`/`,
+  route.post(`/user`,
       [
         schemeValidator(newUserSchema),
         alreadyRegister(userService)

@@ -1,4 +1,9 @@
-header.header
+-
+  var headerLogged = authentication
+    ? `header--logged`
+    : ``
+
+header.header(class=headerLogged)
   .header__wrapper
     a.header__logo.logo(href="/")
       img(src="/img/logo.svg" width="179" height="34" alt="Логотип Куплю Продам")

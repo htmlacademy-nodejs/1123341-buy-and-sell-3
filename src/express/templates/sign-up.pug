@@ -1,6 +1,7 @@
 extends layout.pug
 
 block content
+  include partials/header.pug
   main.page-content
       section.sign-up
         form.sign-up__form.form(action="/sign-up" method="post" enctype="multipart/form-data" autocomplete="off")
@@ -35,3 +36,4 @@ block content
             ul
               each error in errorsMessages
                 li #{error}
+  include partials/footer.pug
