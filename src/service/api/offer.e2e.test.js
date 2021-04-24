@@ -128,7 +128,7 @@ const mockOffers = [
 
 const createAPI = async () => {
   const mockDB = new Sequelize(`sqlite::memory:`, {logging: false});
-  await initDB(mockDB, {categories: mockCategories, offers: mockOffers});
+  await initDB(mockDB, {categories: mockCategories, offers: mockOffers, users: []});
   const app = express();
   app.use(express.json());
   offer(app, new DataService(mockDB), new CommentService(mockDB));

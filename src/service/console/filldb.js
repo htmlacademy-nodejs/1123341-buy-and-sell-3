@@ -92,7 +92,7 @@ module.exports = {
     const countOffer = Number.parseInt(count, 10) || DEFAULT_COUNT;
     const offers = generateOffers(countOffer, titles, categories, sentences, comments);
 
-    return initDatabase(sequelize, {offers, categories});
+    return initDatabase(sequelize, {offers, categories, users: []});
   }
 };
 

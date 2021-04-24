@@ -3,7 +3,7 @@
 const bcrypt = require(`bcrypt`);
 const saltRounds = 10;
 
-class userService {
+class UserService {
   constructor(sequelize) {
     this._User = sequelize.models.User;
   }
@@ -34,4 +34,4 @@ class userService {
   }
 }
 
-module.exports = userService;
+module.exports = UserService;
