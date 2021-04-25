@@ -1,10 +1,13 @@
 'use strict';
 
 const express = require(`express`);
+const expressSession = require(`express-session`);
+const sequelizeStore = require(`../lib/session-store`);
 const {HttpCode, API_PREFIX} = require(`../../constants`);
 const routes = require(`../api`);
 const {getLogger} = require(`../lib/logger`);
 const sequelize = require(`../lib/sequelize`);
+const {DB_SECRET_SESSION} = process.env;
 
 // Значение может быть любым в пределах от 0 до 65535
 // но лучше не использовать диапазон от 0 до 1023
@@ -12,6 +15,14 @@ const sequelize = require(`../lib/sequelize`);
 const DEFAULT_PORT = 3001;
 const app = express();
 app.use(express.json());
+
+app.use(expressSession({
+  store: sequelizeStore,
+  secret: DB_SECRET_SESSION,
+  resave: false,
+  saveUninitialized: false,
+  name: `session_id`
+}));
 
 // в консольном выводе (в объекте) при вызове методов логгера будет ключ name со значением `api`
 const logger = getLogger({name: `api`});
