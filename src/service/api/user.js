@@ -6,6 +6,7 @@ const schemeValidator = require(`../middlewares/scheme-validator`);
 const alreadyRegister = require(`../middlewares/already-register`);
 const newUserSchema = require(`../middlewares/schemes/user-scheme`);
 const loggedUserSchema = require(`../middlewares/schemes/member-scheme`);
+const authenticate = require(`../middlewares/authenticate`);
 
 
 module.exports = (app, userService) => {
@@ -37,7 +38,8 @@ module.exports = (app, userService) => {
 
   route.post(`/login`,
       [
-        schemeValidator(loggedUserSchema)
+        schemeValidator(loggedUserSchema),
+        authenticate(userService)
       ],
 
       async (req, res) => {
