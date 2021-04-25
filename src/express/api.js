@@ -52,6 +52,13 @@ class API {
       data
     });
   }
+
+  async loginUser(data) {
+    return this._load(`/login`, {
+      method: `POST`,
+      data
+    });
+  }
 }
 
 const defaultAPI = new API(defaultURL, TIMEOUT);

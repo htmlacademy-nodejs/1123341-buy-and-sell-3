@@ -1,11 +1,12 @@
 extends layout.pug
 
 block content
+  include partials/header.pug
   main.page-content
     section.login
       form.login__form.form(action="/login" method="post" enctype="multipart/form-data" autocomplete="off")
         .login__title
-          a.login__link(href="/register") Регистрация
+          a.login__link(href="/sign-up") Регистрация
           h2 Вход
         .form__field.login__field
           input#user-email.js-field(type="email" name="user-email" required="")
@@ -16,3 +17,4 @@ block content
           label(for="user-password") Пароль
           span Обязательное поле
         button.login__button.btn.btn--medium.js-button(type="submit" disabled="") Войти
+  include partials/footer.pug

@@ -57,6 +57,23 @@ authRouter.get(`/login`, async (req, res) => {
   res.render(`login`);
 });
 
+authRouter.post(`/login`, upload.none(), async (req, res) => {
+  const {body} = req;
+  const userData = {
+    email: body[`user-email`],
+    password: body[`user-password`],
+  };
+
+  try {
+    await api.loginUser(userData);
+    res.redirect(`/login`);
+
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+});
+
 // // Обработка формы «Вход»
 // authRouter.post(`/login`, async (req, res) => {
 // });

@@ -5,6 +5,7 @@ const {HttpCode} = require(`../../constants`);
 const schemeValidator = require(`../middlewares/scheme-validator`);
 const alreadyRegister = require(`../middlewares/already-register`);
 const newUserSchema = require(`../middlewares/schemes/user-scheme`);
+const loggedUserSchema = require(`../middlewares/schemes/member-scheme`);
 
 
 module.exports = (app, userService) => {
@@ -31,6 +32,16 @@ module.exports = (app, userService) => {
         return res
           .status(HttpCode.CREATED)
           .json(newUser);
+      }
+  );
+
+  route.post(`/login`,
+      [
+        schemeValidator(loggedUserSchema)
+      ],
+
+      async (req, res) => {
+        console.log(`Петя`);
       }
   );
 };
