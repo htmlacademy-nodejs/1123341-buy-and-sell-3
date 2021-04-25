@@ -43,7 +43,7 @@ module.exports = (app, userService) => {
       ],
 
       async (req, res) => {
-        console.log(`Петя`);
+        console.log(req.session);
       }
   );
 };

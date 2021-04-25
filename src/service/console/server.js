@@ -2,7 +2,6 @@
 
 const express = require(`express`);
 const expressSession = require(`express-session`);
-const sequelizeStore = require(`../lib/session-store`);
 const {HttpCode, API_PREFIX} = require(`../../constants`);
 const routes = require(`../api`);
 const {getLogger} = require(`../lib/logger`);
@@ -13,11 +12,21 @@ const {DB_SECRET_SESSION} = process.env;
 // но лучше не использовать диапазон от 0 до 1023
 // не использовать список зарегестрированных в IANA
 const DEFAULT_PORT = 3001;
+
+const SequelizeStore = require(`connect-session-sequelize`)(expressSession.Store);
 const app = express();
+
+const mySessionStore = new SequelizeStore({
+  db: sequelize, // конектор к базе данных
+  expiration: 180000, // максимальное время жизни сессии в миллисекундах
+  checkExpirationInterval: 60000, // Временной интервал проверки и удаления устаревших сессий.
+  // tableName: `Sessions` - название таблицы с сессиями по умолчанию
+});
+
 app.use(express.json());
 
 app.use(expressSession({
-  store: sequelizeStore,
+  store: mySessionStore,
   secret: DB_SECRET_SESSION,
   resave: false,
   saveUninitialized: false,

@@ -30,7 +30,7 @@ module.exports = (service) => (
     }
 
     req.session.isLogged = true;
-    req.session.username = existsUser.username;
+    req.session.email = existsUser.email;
 
     next();
   }
