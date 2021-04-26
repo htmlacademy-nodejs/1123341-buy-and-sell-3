@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require(`express`);
+const cookieParser = require(`cookie-parser`);
 const path = require(`path`);
 const offersRoutes = require(`./routes/offers`);
 const myRoutes = require(`./routes/my`);
@@ -12,6 +13,7 @@ const PUBLIC_DIR = `public`;
 const UPLOAD_DIR = `upload`;
 
 const app = express();
+app.use(cookieParser(`secret key`));
 
 app.use(`/offers`, offersRoutes);
 app.use(`/my`, myRoutes);

@@ -65,7 +65,8 @@ authRouter.post(`/login`, upload.none(), async (req, res) => {
   };
 
   try {
-    await api.loginUser(userData);
+    const existingUser = await api.loginUser(userData);
+    res.cookie(`user_data`, existingUser);
     res.redirect(`/`);
 
   } catch (error) {
