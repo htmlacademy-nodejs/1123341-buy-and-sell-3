@@ -43,7 +43,9 @@ module.exports = (app, userService) => {
       ],
 
       async (req, res) => {
-        console.log(req.session);
+        return res
+          .status(HttpCode.OK)
+          .json(req.session);
       }
   );
 };

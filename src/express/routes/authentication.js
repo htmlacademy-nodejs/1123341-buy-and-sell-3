@@ -66,7 +66,7 @@ authRouter.post(`/login`, upload.none(), async (req, res) => {
 
   try {
     await api.loginUser(userData);
-    res.redirect(`/login`);
+    res.redirect(`/`);
 
   } catch (error) {
     console.log(error);
