@@ -34,7 +34,8 @@ class UserService {
   }
 
   async checkUser(user, password) {
-    const match = await bcrypt.compare(password, user.password);
+    const hashedPassword = user.password;
+    const match = await bcrypt.compare(password, hashedPassword);
     return match;
   }
 }
