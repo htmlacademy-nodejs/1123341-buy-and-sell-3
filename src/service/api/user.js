@@ -43,9 +43,12 @@ module.exports = (app, userService) => {
       ],
 
       async (req, res) => {
+        const formData = req.body;
+        const loggedUser = await userService.findByEmail(formData.email);
+
         return res
           .status(HttpCode.OK)
-          .json(req.session);
+          .json(loggedUser);
       }
   );
 };

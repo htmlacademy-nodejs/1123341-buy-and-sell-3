@@ -29,11 +29,6 @@ module.exports = (service) => (
       return;
     }
 
-    req.session.isLogged = true;
-    req.session.email = existsUser.email;
-    req.session.userName = existsUser.userName;
-    req.session.userAvatar = existsUser.userAvatar;
-
     next();
   }
 );

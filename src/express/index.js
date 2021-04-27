@@ -57,3 +57,7 @@ app.set(`views`, path.resolve(__dirname, `templates`)); // указываем д
 app.set(`view engine`, `pug`); // название шаблонизатора
 
 app.listen(DEFAULT_PORT);
+
+(async () => {
+  await sequelize.sync({force: true});
+})();
