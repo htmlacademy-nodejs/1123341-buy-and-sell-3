@@ -78,7 +78,7 @@ const RegisterMessage = {
 
 const LoginMessage = {
   USER_NOT_EXISTS: `Пользователь с таким email не зарегистрирован`,
-  WRONG_PASSWORD: `Неправильно введён логин или пароль`,
+  WRONG_PASSWORD: `Неправильно введён пароль`,
   WRONG_EMAIL: `Неправильный email`,
   REQUIRED_FIELD: `Поле обязательно для заполнения`,
 };

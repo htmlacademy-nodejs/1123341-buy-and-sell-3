@@ -9,7 +9,7 @@ footer.page-footer
       a.page-footer__logo.logo(href="#")
         img(src="/img/logo.svg" width="179" height="35" alt="Логотип Куплю Продам")
     .page-footer__col
-      if authentication
+      if isLogged
         ul.page-footer__nav
           li
             a(href="/logout") Выход

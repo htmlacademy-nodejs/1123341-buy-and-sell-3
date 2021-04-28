@@ -8,6 +8,7 @@ const OFFERS_PER_PAGE = 8;
 
 // Это маршрут должен быть доступен только аутентифицированным пользователям
 mainRouter.get(`/`, async (req, res) => {
+  const {isLogged, userAvatar} = req.session;
   let {page = 1} = req.query;
   page = parseInt(page, 10);
 
@@ -20,10 +21,10 @@ mainRouter.get(`/`, async (req, res) => {
   ]);
 
   const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
-  const authentication = false; // ?????? реализовать по-другому
 
   res.render(`main`, {
-    authentication,
+    isLogged,
+    userAvatar,
     proposals: offers,
     page,
     totalPages,

@@ -17,4 +17,8 @@ block content
           label(for="user-password") Пароль
           span Обязательное поле
         button.login__button.btn.btn--medium.js-button(type="submit" disabled="") Войти
+          if errorsMessages
+            ul
+              each error in errorsMessages
+                li #{error}
   include partials/footer.pug

@@ -65,12 +65,19 @@ authRouter.post(`/login`, upload.none(), async (req, res) => {
   };
 
   try {
-    const existingUser = await api.loginUser(userData);
-    res.cookie(`user_data`, existingUser);
+    const loggedUser = await api.loginUser(userData);
+    req.session.isLogged = true;
+    req.session.userAvatar = loggedUser.userAvatar;
     res.redirect(`/`);
 
   } catch (error) {
-    console.log(error);
+    let {data: details} = error.response;
+    details = Array.isArray(details) ? details : [details];
+
+    res.render(`login`, {
+      errorsMessages: details.map((errorDescription) => errorDescription.message)}
+    );
+
     return;
   }
 });
