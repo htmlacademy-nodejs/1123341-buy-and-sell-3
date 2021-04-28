@@ -16,6 +16,8 @@ block content
           input#user-password.js-field(type="password" name="user-password" required="")
           label(for="user-password") Пароль
           span Обязательное поле
+        .form__field.login__field
+          input#user-csrf.js-field(type="hidden" name="user-csrf" value=hashedValue required="")
         button.login__button.btn.btn--medium.js-button(type="submit" disabled="") Войти
           if errorsMessages
             ul

@@ -3,9 +3,13 @@
 const {Router} = require(`express`);
 const multer = require(`multer`);
 const {nanoid} = require(`nanoid`);
+const bcrypt = require(`bcrypt`);
+const saltRounds = 10;
 const path = require(`path`);
 const authRouter = new Router();
 const api = require(`../api`).getAPI();
+const formReliability = require(`../../service/middlewares/form-reliability`);
+
 const UPLOAD_DIR = `../upload/img/`;
 const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
 
@@ -54,10 +58,14 @@ authRouter.post(`/sign-up`, upload.single(`user-avatar`), async (req, res) => {
 
 // Вход на сайт
 authRouter.get(`/login`, async (req, res) => {
-  res.render(`login`);
+  req.session.hiddenValue = nanoid(10);
+  const {hiddenValue} = req.session;
+  const hashedValue = await bcrypt.hash(hiddenValue, saltRounds);
+
+  res.render(`login`, {hashedValue});
 });
 
-authRouter.post(`/login`, upload.none(), async (req, res) => {
+authRouter.post(`/login`, upload.none(), formReliability, async (req, res) => {
   const {body} = req;
   const userData = {
     email: body[`user-email`],
