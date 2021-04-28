@@ -82,12 +82,10 @@ authRouter.post(`/login`, upload.none(), async (req, res) => {
   }
 });
 
-// // Обработка формы «Вход»
-// authRouter.post(`/login`, async (req, res) => {
-// });
-
-// // Выход
-// authRouter.get(`/logout`, async (req, res) => {
-// });
+authRouter.get(`/logout`, async (req, res) => {
+  req.session.destroy(() =>{
+    res.redirect(`/login`);
+  });
+});
 
 module.exports = authRouter;

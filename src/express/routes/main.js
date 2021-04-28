@@ -3,11 +3,12 @@
 const {Router} = require(`express`);
 const mainRouter = new Router();
 const api = require(`../api`).getAPI();
+const priveteRoute = require(`../../service/middlewares/private-route`);
 
 const OFFERS_PER_PAGE = 8;
 
 // Это маршрут должен быть доступен только аутентифицированным пользователям
-mainRouter.get(`/`, async (req, res) => {
+mainRouter.get(`/`, priveteRoute, async (req, res) => {
   const {isLogged, userAvatar} = req.session;
   let {page = 1} = req.query;
   page = parseInt(page, 10);
