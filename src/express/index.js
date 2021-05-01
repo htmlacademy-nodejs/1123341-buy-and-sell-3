@@ -6,7 +6,6 @@ const offersRoutes = require(`./routes/offers`);
 const myRoutes = require(`./routes/my`);
 const mainRoutes = require(`./routes/main`);
 const authRoutes = require(`./routes/authentication`);
-const sequelize = require(`../service/lib/sequelize`);
 const sessionStore = require(`../service/lib/session-store`);
 
 const DEFAULT_PORT = 8081;
@@ -14,7 +13,7 @@ const PUBLIC_DIR = `public`;
 const UPLOAD_DIR = `upload`;
 
 const app = express();
-sessionStore(sequelize, app);
+sessionStore(app);
 
 app.use(`/offers`, offersRoutes);
 app.use(`/my`, myRoutes);
@@ -39,7 +38,3 @@ app.set(`views`, path.resolve(__dirname, `templates`)); // указываем д
 app.set(`view engine`, `pug`); // название шаблонизатора
 
 app.listen(DEFAULT_PORT);
-
-(async () => {
-  await sequelize.sync({force: true});
-})();
