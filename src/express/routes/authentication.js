@@ -81,10 +81,13 @@ authRouter.post(`/login`, upload.none(), formReliability, async (req, res) => {
   } catch (error) {
     let {data: details} = error.response;
     details = Array.isArray(details) ? details : [details];
+    const {hiddenValue} = req.session;
+    const hashedValue = await bcrypt.hash(hiddenValue, saltRounds);
 
     res.render(`login`, {
-      errorsMessages: details.map((errorDescription) => errorDescription.message)}
-    );
+      errorsMessages: details.map((errorDescription) => errorDescription.message),
+      hashedValue
+    });
 
     return;
   }

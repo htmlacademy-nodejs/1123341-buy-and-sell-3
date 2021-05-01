@@ -1,38 +1,20 @@
 'use strict';
 
 const express = require(`express`);
-const expressSession = require(`express-session`);
-const cookieParser = require(`cookie-parser`);
 const path = require(`path`);
 const offersRoutes = require(`./routes/offers`);
 const myRoutes = require(`./routes/my`);
 const mainRoutes = require(`./routes/main`);
 const authRoutes = require(`./routes/authentication`);
 const sequelize = require(`../service/lib/sequelize`);
-const {DB_SECRET_SESSION} = process.env;
+const sessionStore = require(`../service/lib/session-store`);
 
 const DEFAULT_PORT = 8081;
 const PUBLIC_DIR = `public`;
 const UPLOAD_DIR = `upload`;
 
-const SequelizeStore = require(`connect-session-sequelize`)(expressSession.Store);
-const mySessionStore = new SequelizeStore({
-  db: sequelize, // конектор к базе данных
-  expiration: 180000, // максимальное время жизни сессии в миллисекундах
-  checkExpirationInterval: 60000, // Временной интервал проверки и удаления устаревших сессий.
-  // tableName: `Sessions` - название таблицы с сессиями по умолчанию
-});
-
 const app = express();
-app.use(cookieParser(`secret key`));
-
-app.use(expressSession({
-  store: mySessionStore,
-  secret: DB_SECRET_SESSION,
-  resave: false,
-  saveUninitialized: false,
-  name: `session_id`
-}));
+sessionStore(sequelize, app);
 
 app.use(`/offers`, offersRoutes);
 app.use(`/my`, myRoutes);
