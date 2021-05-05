@@ -6,19 +6,21 @@ const offersRoutes = require(`./routes/offers`);
 const myRoutes = require(`./routes/my`);
 const mainRoutes = require(`./routes/main`);
 const authRoutes = require(`./routes/authentication`);
-const sessionStore = require(`../service/lib/session-store`);
+const sequelize = require(`../service/lib/sequelize`);
+const refreshTokenModel = require(`../service/models/refresh-token`);
+const RefreshTokenService = require(`../service/data-service/refresh-token`);
 
 const DEFAULT_PORT = 8081;
 const PUBLIC_DIR = `public`;
 const UPLOAD_DIR = `upload`;
 
+refreshTokenModel(sequelize);
 const app = express();
-sessionStore(app);
 
 app.use(`/offers`, offersRoutes);
 app.use(`/my`, myRoutes);
 app.use(`/`, mainRoutes);
-app.use(`/`, authRoutes);
+authRoutes(app, new RefreshTokenService(sequelize));
 
 // встроенный middleware static передает клиенту статические ресурсы
 app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));

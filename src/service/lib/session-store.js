@@ -1,11 +1,9 @@
 'use strict';
 
 const expressSession = require(`express-session`);
-const sequelize = require(`../lib/sequelize`);
-
 const {DB_SECRET_SESSION} = process.env;
 
-module.exports = async (express) => {
+module.exports = async (express, sequelize) => {
   const SequelizeStore = require(`connect-session-sequelize`)(expressSession.Store);
 
   const mySessionStore = new SequelizeStore({
