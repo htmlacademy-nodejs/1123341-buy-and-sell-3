@@ -2,15 +2,17 @@
 
 const {Router} = require(`express`);
 const multer = require(`multer`);
+const jwt = require(`jsonwebtoken`);
 const {nanoid} = require(`nanoid`);
 const bcrypt = require(`bcrypt`);
 const saltRounds = 10;
 const path = require(`path`);
-const authRouter = new Router();
 const api = require(`../api`).getAPI();
 const formReliability = require(`../../service/middlewares/form-reliability`);
+const {makeTokens} = require(`../../service/lib/jwt-helper`);
 
 const UPLOAD_DIR = `../upload/img/`;
+const {JWT_REFRESH_SECRET, DB_FORM_RELIABILITY} = process.env;
 const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
 
 const storage = multer.diskStorage({
@@ -24,79 +26,92 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
-// Регистрация
-authRouter.get(`/sign-up`, (req, res) => {
-  res.render(`sign-up`);
-});
+module.exports = (app, refreshTokenService) => {
+  const authRouter = new Router();
+  app.use(`/`, authRouter);
 
-// // Обработка регистрационной формы
-authRouter.post(`/sign-up`, upload.single(`user-avatar`), async (req, res) => {
-  const {body, file} = req;
-  const userData = {
-    userAvatar: file ? file.filename : ``,
-    userName: body[`user-name`],
-    email: body[`user-email`],
-    password: body[`user-password`],
-    repeat: body[`user-password-again`]
-  };
-
-  try {
-    await api.createUser(userData);
-    res.redirect(`/login`);
-
-  } catch (error) {
-    let {data: details} = error.response;
-    details = Array.isArray(details) ? details : [details];
-
-    res.render(`sign-up`, {
-      errorsMessages: details.map((errorDescription) => errorDescription.message)}
-    );
-
-    return;
-  }
-});
-
-// Вход на сайт
-authRouter.get(`/login`, async (req, res) => {
-  req.session.hiddenValue = nanoid(10);
-  const {hiddenValue} = req.session;
-  const hashedValue = await bcrypt.hash(hiddenValue, saltRounds);
-
-  res.render(`login`, {hashedValue});
-});
-
-authRouter.post(`/login`, upload.none(), formReliability, async (req, res) => {
-  const {body} = req;
-  const userData = {
-    email: body[`user-email`],
-    password: body[`user-password`],
-  };
-
-  try {
-    const loggedUser = await api.loginUser(userData);
-    req.session.isLogged = true;
-    req.session.userAvatar = loggedUser.userAvatar;
-    res.redirect(`/`);
-
-  } catch (error) {
-    let {data: details} = error.response;
-    details = Array.isArray(details) ? details : [details];
-    const {hiddenValue} = req.session;
-    const hashedValue = await bcrypt.hash(hiddenValue, saltRounds);
-
-    res.render(`login`, {
-      errorsMessages: details.map((errorDescription) => errorDescription.message),
-      hashedValue
-    });
-
-    return;
-  }
-});
-
-authRouter.get(`/logout`, async (req, res) => {
-  req.session.destroy(() =>{
-    res.redirect(`/login`);
+  // Регистрация
+  authRouter.get(`/sign-up`, (req, res) => {
+    res.render(`sign-up`);
   });
-});
 
-module.exports = authRouter;
+  // // Обработка регистрационной формы
+  authRouter.post(`/sign-up`, upload.single(`user-avatar`), async (req, res) => {
+    const {body, file} = req;
+    const userData = {
+      userAvatar: file ? file.filename : ``,
+      userName: body[`user-name`],
+      email: body[`user-email`],
+      password: body[`user-password`],
+      repeat: body[`user-password-again`]
+    };
+
+    try {
+      await api.createUser(userData);
+      res.redirect(`/login`);
+
+    } catch (error) {
+      let {data: details} = error.response;
+      details = Array.isArray(details) ? details : [details];
+
+      res.render(`sign-up`, {
+        errorsMessages: details.map((errorDescription) => errorDescription.message)}
+      );
+
+      return;
+    }
+  });
+
+  // Вход на сайт
+  authRouter.get(`/login`, async (req, res) => {
+    const hashedValue = await bcrypt.hash(DB_FORM_RELIABILITY, saltRounds);
+    res.render(`login`, {hashedValue});
+  });
+
+  authRouter.post(`/login`, upload.none(), formReliability, async (req, res) => {
+    const {body} = req;
+    const formData = {
+      email: body[`user-email`],
+      password: body[`user-password`],
+    };
+
+    try {
+      const loggedUser = await api.loginUser(formData);
+      const tokenByUser = await refreshTokenService.find(loggedUser.id);
+
+      if (tokenByUser) {
+        const {token} = tokenByUser;
+        const userData = jwt.verify(token, JWT_REFRESH_SECRET);
+        const {id} = userData;
+        const {accessToken, refreshToken} = makeTokens({id});
+        await refreshTokenService.delete(id);
+        await refreshTokenService.add(id, refreshToken);
+        res.json({accessToken, refreshToken});
+
+      } else {
+        const {accessToken, refreshToken} = makeTokens({id: loggedUser.id});
+        await refreshTokenService.add(loggedUser.id, refreshToken);
+        res.json({accessToken, refreshToken});
+      }
+
+    } catch (error) {
+      let {data: details} = error.response;
+      details = Array.isArray(details) ? details : [details];
+      const {hiddenValue} = req.session;
+      const hashedValue = await bcrypt.hash(hiddenValue, saltRounds);
+
+      res.render(`login`, {
+        errorsMessages: details.map((errorDescription) => errorDescription.message),
+        hashedValue
+      });
+
+      return;
+    }
+  });
+
+  authRouter.get(`/logout`, async (req, res) => {
+    req.session.destroy(() =>{
+      res.redirect(`/login`);
+    });
+  });
+};
