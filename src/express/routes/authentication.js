@@ -86,13 +86,15 @@ module.exports = (app, refreshTokenService) => {
         const {accessToken, refreshToken} = makeTokens({id});
         await refreshTokenService.delete(id);
         await refreshTokenService.add(id, refreshToken);
-        res.json({accessToken, refreshToken});
+        res.cookie(`authorization`, accessToken);
 
       } else {
         const {accessToken, refreshToken} = makeTokens({id: loggedUser.id});
         await refreshTokenService.add(loggedUser.id, refreshToken);
-        res.json({accessToken, refreshToken});
+        res.cookie(`authorization`, accessToken);
       }
+
+      res.redirect(`/`);
 
     } catch (error) {
       let {data: details} = error.response;
