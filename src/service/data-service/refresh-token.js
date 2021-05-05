@@ -5,8 +5,8 @@ class RefreshTokenService {
     this._RefreshToken = sequelize.models.RefreshToken;
   }
 
-  async add(token) {
-    const newToken = await this._RefreshToken.create({token});
+  async add(userId, token) {
+    const newToken = await this._RefreshToken.create({userId, token});
     return newToken.get();
   }
 }

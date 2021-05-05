@@ -7,11 +7,13 @@ const SearchService = require(`./search`);
 const OfferService = require(`./offer`);
 const CommentService = require(`./comment`);
 const UserService = require(`./user`);
+const RefreshTokenService = require(`./refresh-token`);
 
 module.exports = {
   CategoryService,
   CommentService,
   SearchService,
   OfferService,
-  UserService
+  UserService,
+  RefreshTokenService
 };
