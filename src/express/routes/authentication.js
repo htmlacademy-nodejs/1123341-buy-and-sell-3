@@ -110,6 +110,8 @@ module.exports = (app, refreshTokenService) => {
       res.redirect(`/`);
 
     } catch (error) {
+      // на бэкэнде мы формировали ответ для ошибки:
+      // res.json({data: req.body, message: `какой-то текст`})
       let {data: details} = error.response;
       details = Array.isArray(details) ? details : [details];
       const hashedValue = await bcrypt.hash(DB_FORM_RELIABILITY, saltRounds);
