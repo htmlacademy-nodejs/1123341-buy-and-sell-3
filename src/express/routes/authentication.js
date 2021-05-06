@@ -128,6 +128,7 @@ module.exports = (app, refreshTokenService) => {
     const userData = jwt.verify(token, JWT_ACCESS_SECRET);
     const {id} = userData;
     refreshTokenService.delete(id);
+    res.clearCookie(`authorization`);
     res.redirect(`/login`);
   });
 };
