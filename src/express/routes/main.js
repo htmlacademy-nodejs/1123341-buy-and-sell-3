@@ -1,15 +1,19 @@
 'use strict';
 
+const jwt = require(`jsonwebtoken`);
 const {Router} = require(`express`);
 const mainRouter = new Router();
 const api = require(`../api`).getAPI();
-const priveteRoute = require(`../../service/middlewares/private-route`);
+const privateRoute = require(`../../service/middlewares/private-route`);
 
 const OFFERS_PER_PAGE = 8;
+const {JWT_ACCESS_SECRET} = process.env;
 
 // Это маршрут должен быть доступен только аутентифицированным пользователям
-mainRouter.get(`/`, priveteRoute, async (req, res) => {
-  const {isLogged, userAvatar} = req.session;
+mainRouter.get(`/`, privateRoute, async (req, res) => {
+  const token = req.cookies[`authorization`];
+  const userData = jwt.verify(token, JWT_ACCESS_SECRET);
+
   let {page = 1} = req.query;
   page = parseInt(page, 10);
 
@@ -24,8 +28,8 @@ mainRouter.get(`/`, priveteRoute, async (req, res) => {
   const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
 
   res.render(`main`, {
-    isLogged,
-    userAvatar,
+    isLogged: userData.isLogged,
+    userAvatar: userData.userAvatar,
     proposals: offers,
     page,
     totalPages,

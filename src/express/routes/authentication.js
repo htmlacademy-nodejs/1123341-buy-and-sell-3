@@ -76,20 +76,32 @@ module.exports = (app, refreshTokenService) => {
     };
 
     try {
-      const loggedUser = await api.loginUser(formData);
-      const tokenByUser = await refreshTokenService.find(loggedUser.id);
+      const loggedUser = await api.loginUser(formData); // как будто данные из строки таблицы Users
+      const tokenByUser = await refreshTokenService.find(loggedUser.id); // экземпляр модели RefreshToken
 
       if (tokenByUser) {
         const {token} = tokenByUser;
-        const userData = jwt.verify(token, JWT_REFRESH_SECRET);
-        const {id} = userData;
-        const {accessToken, refreshToken} = makeTokens({id});
+        const userData = jwt.verify(token, JWT_REFRESH_SECRET); // получаем раздекодированные данные, если токен успешно верифицирован
+        const {id} = userData; // вычленяем id пользователя
+
+        const {accessToken, refreshToken} = makeTokens({
+          id,
+          userAvatar: loggedUser.userAvatar,
+          isLogged: true
+        });
+
         await refreshTokenService.delete(id);
         await refreshTokenService.add(id, refreshToken);
+
         res.cookie(`authorization`, accessToken);
 
       } else {
-        const {accessToken, refreshToken} = makeTokens({id: loggedUser.id});
+        const {accessToken, refreshToken} = makeTokens({
+          id: loggedUser.id,
+          userAvatar: loggedUser.userAvatar,
+          isLogged: true
+        });
+
         await refreshTokenService.add(loggedUser.id, refreshToken);
         res.cookie(`authorization`, accessToken);
       }
@@ -99,8 +111,7 @@ module.exports = (app, refreshTokenService) => {
     } catch (error) {
       let {data: details} = error.response;
       details = Array.isArray(details) ? details : [details];
-      const {hiddenValue} = req.session;
-      const hashedValue = await bcrypt.hash(hiddenValue, saltRounds);
+      const hashedValue = await bcrypt.hash(DB_FORM_RELIABILITY, saltRounds);
 
       res.render(`login`, {
         errorsMessages: details.map((errorDescription) => errorDescription.message),
