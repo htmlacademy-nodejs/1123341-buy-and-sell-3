@@ -9,10 +9,11 @@ const saltRounds = 10;
 const path = require(`path`);
 const api = require(`../api`).getAPI();
 const formReliability = require(`../../service/middlewares/form-reliability`);
+const authenticateJwt = require(`../../service/middlewares/authenticateJwt`);
 const {makeTokens} = require(`../../service/lib/jwt-helper`);
 
 const UPLOAD_DIR = `../upload/img/`;
-const {JWT_REFRESH_SECRET, DB_FORM_RELIABILITY} = process.env;
+const {JWT_ACCESS_SECRET, JWT_REFRESH_SECRET, DB_FORM_RELIABILITY} = process.env;
 const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
 
 const storage = multer.diskStorage({
@@ -122,9 +123,11 @@ module.exports = (app, refreshTokenService) => {
     }
   });
 
-  authRouter.get(`/logout`, async (req, res) => {
-    req.session.destroy(() =>{
-      res.redirect(`/login`);
-    });
+  authRouter.get(`/logout`, authenticateJwt, async (req, res) => {
+    const token = req.cookies[`authorization`];
+    const userData = jwt.verify(token, JWT_ACCESS_SECRET);
+    const {id} = userData;
+    refreshTokenService.delete(id);
+    res.redirect(`/login`);
   });
 };

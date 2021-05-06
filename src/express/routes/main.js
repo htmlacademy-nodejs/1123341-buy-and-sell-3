@@ -4,13 +4,13 @@ const jwt = require(`jsonwebtoken`);
 const {Router} = require(`express`);
 const mainRouter = new Router();
 const api = require(`../api`).getAPI();
-const privateRoute = require(`../../service/middlewares/private-route`);
+const authenticateJwt = require(`../../service/middlewares/authenticateJwt`);
 
 const OFFERS_PER_PAGE = 8;
 const {JWT_ACCESS_SECRET} = process.env;
 
 // Это маршрут должен быть доступен только аутентифицированным пользователям
-mainRouter.get(`/`, privateRoute, async (req, res) => {
+mainRouter.get(`/`, authenticateJwt, async (req, res) => {
   const token = req.cookies[`authorization`];
   const userData = jwt.verify(token, JWT_ACCESS_SECRET);
 
