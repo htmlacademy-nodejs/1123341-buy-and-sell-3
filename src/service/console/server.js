@@ -2,7 +2,7 @@
 
 const express = require(`express`);
 const {HttpCode, API_PREFIX} = require(`../../constants`);
-const routes = require(`../api`);
+const {routes} = require(`../api`);
 const {getLogger} = require(`../lib/logger`);
 const sequelize = require(`../lib/sequelize`);
 
@@ -10,6 +10,7 @@ const sequelize = require(`../lib/sequelize`);
 // но лучше не использовать диапазон от 0 до 1023
 // не использовать список зарегестрированных в IANA
 const DEFAULT_PORT = 3001;
+
 const app = express();
 app.use(express.json());
 

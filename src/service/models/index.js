@@ -7,6 +7,7 @@ const defineCategory = require(`./category`);
 const defineComment = require(`./comment`);
 const defineOffer = require(`./offer`);
 const defineUser = require(`./user`);
+const defineRefreshToken = require(`./refresh-token`);
 
 // Алиас — это особое имя, которое даётся для связи между сущностями.
 // Позволяет задать несколько разных связей между одной и той же парой сущностей.
@@ -20,6 +21,10 @@ const define = (sequelize) => {
   const Comment = defineComment(sequelize);
   const Offer = defineOffer(sequelize);
   const User = defineUser(sequelize);
+  const RefreshToken = defineRefreshToken(sequelize);
+
+  User.hasOne(RefreshToken, {foreignKey: `userId`});
+  RefreshToken.belongsTo(User, {foreignKey: `userId`});
 
   // В таблице сomments столбец offer_id
   Offer.hasMany(Comment, {as: Aliase.COMMENTS, foreignKey: `offerId`});
@@ -32,7 +37,7 @@ const define = (sequelize) => {
   Category.belongsToMany(Offer, {through: OfferCategory, as: Aliase.OFFERS});
   Category.hasMany(OfferCategory, {as: Aliase.OFFER_CATEGORIES}); // зачем???????
 
-  return {Category, Comment, Offer, User, OfferCategory};
+  return {Category, Comment, Offer, User, OfferCategory, RefreshToken};
 };
 
 module.exports = define;

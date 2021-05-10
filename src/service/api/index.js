@@ -12,24 +12,26 @@ const {
   SearchService,
   OfferService,
   CommentService,
-  UserService
+  UserService,
+  RefreshTokenService
 } = require(`../data-service`);
 
 const sequelize = require(`../lib/sequelize`);
 const defineModels = require(`../models`);
 
-const app = new Router();
+const routes = new Router();
 
 // инициирует создание таблиц
 defineModels(sequelize);
 
 (() => {
-  category(app, new CategoryService(sequelize));
-  search(app, new SearchService(sequelize));
-  offer(app, new OfferService(sequelize), new CommentService(sequelize));
-  user(app, new UserService(sequelize));
+  category(routes, new CategoryService(sequelize));
+  search(routes, new SearchService(sequelize));
+  offer(routes, new OfferService(sequelize), new CommentService(sequelize));
+  user(routes, new UserService(sequelize));
 })();
 
-module.exports = app;
-
-
+module.exports = {
+  routes,
+  refreshTokenService: new RefreshTokenService(sequelize)
+};

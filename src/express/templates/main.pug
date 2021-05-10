@@ -1,6 +1,7 @@
 extends layout.pug
 
 block content
+  include partials/header.pug
   main.page-content
     include partials/categories.pug
     section.tickets-list
@@ -27,4 +28,5 @@ block content
                       |  ₽
                   .ticket-card__desc
                     p #{proposal.description}
-  +pagination(page, totalPages, 2, `?`)                    
+  +pagination(page, totalPages, 2, `?`)
+  include partials/footer.pug

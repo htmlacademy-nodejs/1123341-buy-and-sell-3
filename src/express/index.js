@@ -1,32 +1,26 @@
 'use strict';
 
 const express = require(`express`);
-const expressSession = require(`express-session`);
-const {secretSession, sequelizeStore} = require(`../service/lib/session-store`);
+const cookieParser = require(`cookie-parser`);
 const path = require(`path`);
 const offersRoutes = require(`./routes/offers`);
 const myRoutes = require(`./routes/my`);
 const mainRoutes = require(`./routes/main`);
 const authRoutes = require(`./routes/authentication`);
+const {refreshTokenService} = require(`../service/api`);
+const {DB_SECRET_SESSION} = process.env;
 
 const DEFAULT_PORT = 8081;
 const PUBLIC_DIR = `public`;
 const UPLOAD_DIR = `upload`;
 
 const app = express();
-
-app.use(expressSession({
-  store: sequelizeStore,
-  secret: secretSession,
-  resave: false,
-  saveUninitialized: false,
-  name: `session_id`
-}));
+app.use(cookieParser(DB_SECRET_SESSION));
 
 app.use(`/offers`, offersRoutes);
 app.use(`/my`, myRoutes);
 app.use(`/`, mainRoutes);
-app.use(`/`, authRoutes);
+authRoutes(app, refreshTokenService);
 
 // встроенный middleware static передает клиенту статические ресурсы
 app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));

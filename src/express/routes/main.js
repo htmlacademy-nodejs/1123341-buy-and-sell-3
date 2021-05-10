@@ -1,13 +1,19 @@
 'use strict';
 
+const jwt = require(`jsonwebtoken`);
 const {Router} = require(`express`);
 const mainRouter = new Router();
 const api = require(`../api`).getAPI();
+const authenticateJwt = require(`../../service/middlewares/authenticateJwt`);
 
 const OFFERS_PER_PAGE = 8;
+const {JWT_ACCESS_SECRET} = process.env;
 
 // Это маршрут должен быть доступен только аутентифицированным пользователям
-mainRouter.get(`/`, async (req, res) => {
+mainRouter.get(`/`, authenticateJwt, async (req, res) => {
+  const token = req.cookies[`authorization`];
+  const userData = jwt.verify(token, JWT_ACCESS_SECRET);
+
   let {page = 1} = req.query;
   page = parseInt(page, 10);
 
@@ -20,10 +26,16 @@ mainRouter.get(`/`, async (req, res) => {
   ]);
 
   const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
-  res.render(`main`, {proposals: offers, page, totalPages, categories});
-});
 
-mainRouter.get(`/login`, (req, res) => res.render(`login`));
+  res.render(`main`, {
+    isLogged: userData.isLogged,
+    userAvatar: userData.userAvatar,
+    proposals: offers,
+    page,
+    totalPages,
+    categories
+  });
+});
 
 mainRouter.get(`/search`, async (req, res) => {
   try {
