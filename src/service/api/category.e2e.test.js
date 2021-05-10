@@ -130,7 +130,7 @@ app.use(express.json());
 
 beforeAll(async () => {
   // в реальности вместо mockDB должен быть ../lib/sequelize
-  await initDB(mockDB, {categories: mockCategories, offers: mockOffers});
+  await initDB(mockDB, {categories: mockCategories, offers: mockOffers, users: []});
   category(app, new DataService(mockDB));
 });
 

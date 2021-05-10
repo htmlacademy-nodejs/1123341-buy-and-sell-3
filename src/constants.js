@@ -61,6 +61,24 @@ const users = [
   }
 ];
 
+const ResultingPage = {
+  LOGIN_PAGE: `login`,
+  REGISTER_PAGE: `sign-up`,
+};
+
+const RegisterMessage = {
+  USER_ALREADY_REGISTER: `Пользователь с таким email уже зарегистрирован`,
+  WRONG_EMAIL: `Неправильный email`,
+  REQUIRED_FIELD: `Поле обязательно для заполнения`,
+  MIN_PASSWORD_LENGTH: `Пароль должен быть не меньше 6 символов`,
+  MAX_PASSWORD_LENGTH: `Пароль должен быть не больше 12 символов`,
+  PASSWORDS_NOT_EQUALS: `Пароли не совпадают`,
+  EMPTY_VALUE: `Не указано значение`,
+};
+
+const MIN_PASSWORD_LENGTH = 6;
+const MAX_PASSWORD_LENGTH = 12;
+
 module.exports = {
   DEFAULT_COMMAND,
   DEFAULT_COUNT,
@@ -74,6 +92,10 @@ module.exports = {
   MAX_ID_LENGTH,
   API_PREFIX,
   Env,
-  users
+  users,
+  ResultingPage,
+  RegisterMessage,
+  MIN_PASSWORD_LENGTH,
+  MAX_PASSWORD_LENGTH
 };
 

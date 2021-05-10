@@ -10,7 +10,7 @@ block content
             .ticket-form__avatar-container.js-preview-container
               .ticket-form__avatar.js-preview
               .ticket-form__field-avatar
-                input#avatar.visually-hidden.js-file-field(type="file" name="avatar")
+                input#avatar.visually-hidden.js-file-field(type="file" name="offer-avatar")
                 label(for="avatar")
                   span.ticket-form__text-upload Загрузить фото…
                   span.ticket-form__text-another Загрузить другое фото…
@@ -42,3 +42,7 @@ block content
                     input#sell-field.visually-hidden(type="radio" name="action" value="SALE")
                     label.switch__button(for="sell-field") Продам
             button.form__button.btn.btn--medium.js-button(type="submit" disabled="") Опубликовать
+            if errorsMessages
+              ul
+                each error in errorsMessages
+                  li #{error}

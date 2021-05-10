@@ -3,8 +3,8 @@
 const defineModels = require(`../models`);
 const Aliase = require(`../models/aliase`);
 
-module.exports = async (sequelize, {categories, offers}) => {
-  const {Category, Offer} = defineModels(sequelize); // а где Comment и OfferCategory????????????
+module.exports = async (sequelize, {categories, offers, users}) => {
+  const {Category, Offer, User} = defineModels(sequelize); // а где Comment и OfferCategory????????????
   await sequelize.sync({force: true});
 
   // -------------------------------------------------
@@ -37,6 +37,9 @@ module.exports = async (sequelize, {categories, offers}) => {
       );
     });
 
+  const userPromises = users
+    .map(async (user) => await User.create(user));
+
   // offerPromises - массив промисов, у которых resolve(undefined)
-  await Promise.all(offerPromises); // [undefined, undefined...]
+  await Promise.all([...offerPromises, ...userPromises]); // [undefined, undefined...]
 };
